@@ -1,0 +1,132 @@
+[
+  {
+    "Name": "asd",
+    "StreetName": "ads",
+    "HouseNumber": 123,
+    "Adults": [
+      {
+        "Job": null,
+        "Id": 1,
+        "FirstName": "asd",
+        "LastName": "sad",
+        "HairColor": "sad",
+        "EyeColor": "ad",
+        "Age": 123,
+        "Weight": 132,
+        "Height": 13,
+        "Sex": "af"
+      }
+    ],
+    "Children": [
+      {
+        "Interests": [],
+        "Pets": [
+          {
+            "Id": 2,
+            "Species": "13",
+            "Name": "das",
+            "Age": 132
+          }
+        ],
+        "Id": 2,
+        "FirstName": "ads",
+        "LastName": "sda",
+        "HairColor": "dsa",
+        "EyeColor": "dsa",
+        "Age": 123,
+        "Weight": 123,
+        "Height": 123,
+        "Sex": "sda"
+      },
+      {
+        "Interests": [
+          {
+            "Type": "asd",
+            "Description": "dsadsadsadsa"
+          }
+        ],
+        "Pets": [
+          {
+            "Id": 4,
+            "Species": "sa",
+            "Name": "ad",
+            "Age": 123
+          }
+        ],
+        "Id": 4,
+        "FirstName": "asdads",
+        "LastName": "ads",
+        "HairColor": "dsa",
+        "EyeColor": "ds",
+        "Age": 123,
+        "Weight": 132,
+        "Height": 12,
+        "Sex": "ac"
+      },
+      {
+        "Interests": [],
+        "Pets": [
+          {
+            "Id": 5,
+            "Species": "dsa",
+            "Name": "ads",
+            "Age": 132
+          }
+        ],
+        "Id": 5,
+        "FirstName": "asd",
+        "LastName": "sa",
+        "HairColor": "das",
+        "EyeColor": "dsa1",
+        "Age": 132,
+        "Weight": 132,
+        "Height": 132,
+        "Sex": "das"
+      }
+    ],
+    "Pets": [
+      {
+        "Id": 2,
+        "Species": "13",
+        "Name": "das",
+        "Age": 132
+      },
+      {
+        "Id": 4,
+        "Species": "sa",
+        "Name": "ad",
+        "Age": 123
+      },
+      {
+        "Id": 5,
+        "Species": "dsa",
+        "Name": "ads",
+        "Age": 132
+      }
+    ]
+  },
+  {
+    "Name": "Test",
+    "StreetName": "Test",
+    "HouseNumber": 123,
+    "Adults": [
+      {
+        "Job": {
+          "JobTitle": "asdda",
+          "Salary": 132312
+        },
+        "Id": 3,
+        "FirstName": "sda",
+        "LastName": "jjj",
+        "HairColor": "jjj",
+        "EyeColor": "jjj",
+        "Age": 123,
+        "Weight": 13,
+        "Height": 31,
+        "Sex": "j"
+      }
+    ],
+    "Children": [],
+    "Pets": []
+  }
+]
