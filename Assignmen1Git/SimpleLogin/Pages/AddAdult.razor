@@ -78,18 +78,13 @@
             {
                 adult.Job = new Job() {JobTitle = jobTitle, Salary = salary};
             }
+            
             if (Family != null)
             {
-                try
-                {
-                    Adult CreatedWithId = await AdultModel.AddAdultAsync(adult);
-                    await FamilyAdultModel.AddAdultToFamilyAsync(CreatedWithId, Family);
-                    NavigationManager.NavigateTo("/Families");
-                }
-                catch (Exception e)
-                {
-                    ModalService.Show<ErrorPage>("You can not add someone to family twice");
-                }
+                Adult createdWithId = await AdultModel.AddAdultAsync(adult);
+                await FamilyAdultModel.AddAdultToFamilyAsync(createdWithId, Family);
+                 NavigationManager.NavigateTo("/Families");
+               
             }
             else
             {
@@ -99,7 +94,7 @@
         }
         catch (Exception e)
         {
-            //Kunne slette den lavede Adult her, hvis vi kom lang nok til den blev oprettet
+            //Kunne slette den lavede Adult her, hvis vi kom lang nok til den blev oprettet, men ikke i family
             ModalService.Show<ErrorPage>(e.Message);
         }
      
@@ -113,14 +108,17 @@
     {
         try
         {
-            Family = JsonSerializer.Deserialize<Family>(FamilyAsJson, new JsonSerializerOptions() {
+            Family = JsonSerializer.Deserialize<Family>(FamilyAsJson, new JsonSerializerOptions()
+            {
                 WriteIndented = true,
                 PropertyNameCaseInsensitive = true
             });
             Console.WriteLine(Family.StreetName);
         }
         catch (Exception e)
-        {}
+        {
+            //Går i Catch hvis ikke vi bruger family parameteret
+        }
 
     }
 

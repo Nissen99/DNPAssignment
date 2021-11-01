@@ -6,7 +6,7 @@
 <p>Hello there, login</p>
 
 <div class="form-group">
-    <label>User name:</label>
+    <label>User name</label>
     <input type="text" placeholder="user name" @bind-value="username"/>
 </div>
 <div class="form-group">
@@ -28,7 +28,6 @@
         errorMessage = "";
         try {
              await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).ValidateLoginAsync(username, password);
-            Console.WriteLine("Logged in succesfully");
             NavigationManager.NavigateTo("/");
         } catch (Exception e) {
             errorMessage = e.Message;
