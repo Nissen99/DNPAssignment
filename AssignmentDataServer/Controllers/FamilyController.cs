@@ -13,12 +13,15 @@ namespace AssignmentDataServer.Controllers
     public class FamilyController : ControllerBase
     {
         private IDataSaver DataSaver;
+        private IInputValidationCheck inputValidationCheck;
 
-        public FamilyController(IDataSaver dataSaver)
+
+        public FamilyController(IDataSaver dataSaver, IInputValidationCheck inputValidationCheck)
         {
             DataSaver = dataSaver;
-        }
+            this.inputValidationCheck = inputValidationCheck;
 
+        }
 
         /*
          * Tjek for StreetName + House Number server side, incase new client will not
@@ -27,7 +30,8 @@ namespace AssignmentDataServer.Controllers
         [HttpPost]
         public async Task<ActionResult<Family>> AddFamily([FromBody] Family family)
         {
-            if (family.StreetName == null || family.HouseNumber == null)
+            
+            if (!inputValidationCheck.CheckFamilyValid(family))
             {
                 return BadRequest("Family needs Primay key, StreetName + House number");
             }

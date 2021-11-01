@@ -28,6 +28,8 @@ namespace AssignmentDataServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IDataSaver, FileContext>();
+            
+            services.AddScoped<IInputValidationCheck, InputValidationCheck>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

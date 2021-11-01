@@ -1,4 +1,5 @@
 ﻿
+using System;
 using AssignmentDataServer.Models;
 using AssignmentDataServer.Persistence;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,14 @@ namespace AssignmentDataServer.Controllers
     public class ChildController : ControllerBase
     {
         private IDataSaver DataSaver;
+        private IInputValidationCheck inputValidationCheck;
 
-        public ChildController(IDataSaver dataSaver)
+
+        public ChildController(IDataSaver dataSaver, IInputValidationCheck inputValidationCheck)
         {
             DataSaver = dataSaver;
+            this.inputValidationCheck = inputValidationCheck;
+
         }
 
 
@@ -24,6 +29,12 @@ namespace AssignmentDataServer.Controllers
         [HttpPost]
         public ActionResult<Child> AddChild([FromBody] Child child)
         {
+
+            if (!inputValidationCheck.CheckValidPerson(child))
+            {
+                return BadRequest();
+            }
+
             child.Id = DataSaver.GetNextId();
             return Created("New Id: " + child.Id, child);
         }

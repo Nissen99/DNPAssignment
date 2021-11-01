@@ -12,10 +12,13 @@ namespace AssignmentDataServer.Controllers
     public class AdultController : ControllerBase
     {
         private IDataSaver DataSaver;
+        private IInputValidationCheck inputValidationCheck;
+        
 
-        public AdultController(IDataSaver dataSaver)
+        public AdultController(IDataSaver dataSaver, IInputValidationCheck inputValidationCheck)
         {
             DataSaver = dataSaver;
+            this.inputValidationCheck = inputValidationCheck;
         }
 
         [HttpGet]
@@ -35,9 +38,20 @@ namespace AssignmentDataServer.Controllers
         [HttpPost]
         public ActionResult<Adult> AddAdult([FromBody] Adult adult)
         {
+
+            if (!inputValidationCheck.CheckValidPerson(adult))
+            {
+                BadRequest("Something in Adult not set");
+
+            }
+      
+        
             DataSaver.AddAdult(adult);
             return Created("New Id: " + adult.Id, adult);
         }
+
+      
+      
 
         [HttpDelete]
         public ActionResult RemoveAdult([FromQuery] int Id)
