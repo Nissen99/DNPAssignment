@@ -1,0 +1,31 @@
+﻿@using Models
+
+@using System.Text.Json
+
+@inject NavigationManager NavigationManager 
+
+
+<button @onclick="addNewPerson">
+                                 Add new Person
+</button> 
+
+<button @onclick="chooseExistingPerson">
+                                 Choose existing person
+               </button> 
+@code {
+
+    [Parameter] public Family Family { get; set; }
+
+      
+    private void addNewPerson()
+    {
+        string FamilyAsJson = JsonSerializer.Serialize(Family);
+        NavigationManager.NavigateTo($"/AddAdult/{FamilyAsJson}");
+    }
+
+    private void chooseExistingPerson()
+    {
+        string FamilyAsJson = JsonSerializer.Serialize(Family);
+        NavigationManager.NavigateTo($"/Adults/{FamilyAsJson}");
+    }
+}

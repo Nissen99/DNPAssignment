@@ -1,0 +1,209 @@
+﻿@page "/Adults"
+@page "/Adults/{FamilyAsJson}"
+@using Models
+@using SimpleLogin.BuisnessModels
+@using System.Text.Json
+@using SimpleLogin.BuisnessModels.FamilyConnectionModels
+@inject IAdultModel AdultModel
+@inject IFamilyAdultModel FamilyAdultModel
+@inject NavigationManager NavigationManager
+@inject IModalService ModalService
+
+<h3>List of all Adults in the system</h3>
+
+    <EditForm Model="@nameFilter" OnValidSubmit="@executeFilter">
+        <div class="form-group"> First Name:<br/> 
+                <InputText type="text" @bind-Value="nameFilter" />
+            </div>
+        <button class="btn btn-outline-dark" type="submit">
+            Filter
+        </button>
+        </EditForm>
+    
+
+
+@if (adultsToShow == null)
+{
+    <p>
+      <em>No Adults Found...</em>  
+    </p>
+} else if (!adultsToShow.Any())
+{
+    <p>
+        <em>No Adults exist. Please add some.</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Hair color</th>
+            <th>Eye color</th>
+            <th>Age</th>
+            <th>Weight</th>
+            <th>Height</th>
+            <th>Sex</th>
+            <th>Job title</th>
+            <th>Salary</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var adult in adultsToShow)
+        {
+            <tr>
+
+                <td>@adult.Id</td>
+                <td>@adult.FirstName</td>
+                <td>@adult.LastName</td>
+                <td>@adult.HairColor</td>
+                <td>@adult.EyeColor</td>
+                <td>@adult.Age</td>
+                <td>@adult.Weight</td>
+                <td>@adult.Height</td>
+                <td>@adult.Sex</td>
+                @if (adult.Job != null)
+                {
+                    if (adult.Job.JobTitle != null)
+                    {
+                        <td>@adult.Job.JobTitle</td>
+                    }
+                    else
+                    {
+                        <td>NaN</td>
+                    }  
+                    if (adult.Job.Salary != null)
+                    {
+                        <td>@adult.Job.Salary</td>
+                    }
+                    else
+                    {
+                        <td>NaN</td>
+                    }
+                }
+                else
+                {
+                    <td>NaN</td>
+                    <td>NaN</td>
+                }
+
+
+                 
+        <Authorized Roles="MustBeAdmin">
+            <AuthorizeView>
+                <td>
+                    @if(Family == null){
+                    <button @onclick="@(() => removeAdult(adult))">
+                        <i class="oi oi-trash" style="color:red"/>
+                    </button>
+                    }
+                    else
+                    {
+                        <button @onclick="@(() => addAdultToFamily(adult))">
+                            <i class="oi oi-check" style="color:red"/>
+                        </button>
+                    }
+                </td>
+            </AuthorizeView>
+                    </Authorized>
+
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IList<Adult> adultsToShow;
+    private IList<Adult> allAdults;
+    private string nameFilter = "";
+
+    [Parameter] public string FamilyAsJson { get; set; }
+    private Family Family;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            allAdults = await AdultModel.GetAllAdultsAsync();
+        }
+        catch (Exception e)
+        {
+            allAdults = null;
+        }
+        adultsToShow = allAdults;
+    }
+    
+    
+    protected override void OnParametersSet()
+    {
+        try
+        {
+            Family = JsonSerializer.Deserialize<Family>(FamilyAsJson, new JsonSerializerOptions() {
+                WriteIndented = true,
+                PropertyNameCaseInsensitive = true
+            });
+            Console.WriteLine(Family.StreetName);
+        }
+        catch (Exception e)
+        {}
+
+    }
+    
+
+    private async Task removeAdult(Adult adult)
+    {
+        await AdultModel.RemoveAdultAsync(adult);
+        try
+        {
+            allAdults = await AdultModel.GetAllAdultsAsync();
+        }
+        catch (Exception e)
+        {
+            allAdults = null;
+        }
+        executeFilter(); //Til at update listen hvis vi søger og sletter sammentidigt
+    }
+
+ 
+
+    private void executeFilter()
+    {
+        if (allAdults == null)
+        {
+            adultsToShow = allAdults;
+            return;
+        }
+        
+        if (!"".Equals(nameFilter) && nameFilter != null)
+        {
+           adultsToShow = allAdults.Where(t => nameFilter.Contains(t.FirstName) && t.FirstName != null).ToList();
+        }
+        else
+        {
+            Console.WriteLine("empty" + "".Equals(nameFilter));
+            adultsToShow = allAdults;
+        }
+       
+    }
+
+    private async Task addAdultToFamily(Adult adult)
+    {
+        try
+        {      
+            await FamilyAdultModel.AddAdultToFamilyAsync(adult, Family);
+            NavigationManager.NavigateTo("/Families");
+
+        }
+        catch (Exception e)
+        {
+            ModalService.Show<ErrorPage>("You can not add someone to family twice");
+        }
+
+    }
+
+}

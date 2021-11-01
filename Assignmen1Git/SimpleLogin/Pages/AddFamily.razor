@@ -1,0 +1,41 @@
+﻿@page "/addFamily"
+@using Models
+@using SimpleLogin.BuisnessModels.FamilyModel
+@inject IFamilyModel FamilyModel
+@inject NavigationManager NavigationManager
+
+<h3>AddFamily</h3>
+
+<EditForm Model="@family" OnValidSubmit="@AddNewFamily">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+    <div class="form-group"> Family name:<br/> 
+        <InputText @bind-Value="@family.Name" required/>
+    </div>
+    
+    <div class="form-group"> StreetName:<br/> 
+        <InputText @bind-Value="@family.StreetName" required/>
+    </div>
+    
+    <div class="form-group"> House Number:<br/> 
+        <InputNumber @bind-Value="@family.HouseNumber" required/>
+    </div>
+        
+        <p class="actions">
+                <button class="btn btn-outline-dark" type="submit">Create</button>
+            </p>
+</EditForm>
+
+
+
+@code {
+    Family family = new Family();
+
+    
+    private async Task AddNewFamily()
+    {
+        await FamilyModel.AddFamilyAsync(family);
+        NavigationManager.NavigateTo("/Families");
+    }
+
+}

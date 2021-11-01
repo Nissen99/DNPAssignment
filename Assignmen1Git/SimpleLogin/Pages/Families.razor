@@ -1,0 +1,139 @@
+﻿@page "/Families"
+@using Models
+@using SimpleLogin.BuisnessModels.FamilyModel
+@using System.Text.Json
+@inject IFamilyModel FamilyModel
+@inject NavigationManager NavigationManager 
+
+<h2>Families</h2>
+
+<!--Filter er 1 key stroke bagud.... af en eller anden grund -->
+<p>
+    Filter by Family Name: <input type="text" @oninput="@((arg) => Filter(arg))"/>
+</p>
+
+@if (familiesToShow == null)
+{
+    <p>
+      <em>Cant find any Families</em>  
+    </p>
+} else if (!familiesToShow.Any())
+{
+    <p>
+        <em>No families exist. Please add some.</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Street Name</th>
+            <th>House Number</th>
+            <th>Adults</th>
+            <th>Children</th>
+            <th>Pets</th>
+            <th>Display</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var family in familiesToShow)
+        {
+            <tr>
+
+                <td>@family.Name</td>
+                <td>@family.StreetName</td>
+                <td>@family.HouseNumber</td>
+                <td>@family.Adults.Count</td>
+                <td>@family.Children.Count</td>
+                <td>@family.Pets.Count</td>
+                
+            <td>
+                <button @onclick="@(() => DisplayFamily(family))">
+                    <i class="oi oi-zoom-in"/>
+                </button>
+            </td>
+             <td>
+                <button @onclick="@(() => RemoveFamily(family))">
+                    <i class="oi oi-trash" style="color:red"/>
+
+                </button>
+            </td>
+                
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+<br/>
+
+
+@code {
+    private IList<Family> familiesToShow;
+    private IList<Family> allFamilies;
+    private string nameFilter;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            allFamilies = await FamilyModel.GetAllFamiliesAsync();
+            familiesToShow = allFamilies;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            
+        }
+
+    }
+
+ 
+
+    private void Filter(ChangeEventArgs changeEventArgs)
+    {
+        nameFilter = changeEventArgs.Value.ToString();
+        executeFilter();
+    }
+
+    private void DisplayFamily(Family family)
+    {
+        string familyAsJson = JsonSerializer.Serialize(family);
+        NavigationManager.NavigateTo($"/DisplayFamily/{familyAsJson}");
+    }
+    private async Task executeFilter()
+    {
+        try
+        {
+            allFamilies = await FamilyModel.GetAllFamiliesAsync();
+        }
+        catch (Exception e)
+        {
+            allFamilies = null;
+            familiesToShow = allFamilies;
+            return;
+        }
+        if (!"".Equals(nameFilter) && nameFilter != null)
+        {
+            familiesToShow = allFamilies.Where(t => t.Name.Contains(nameFilter)).ToList();
+        }
+        else
+        {
+            familiesToShow = allFamilies;
+        }
+       
+    }
+
+    private async Task RemoveFamily(Family family)
+    {
+        await FamilyModel.RemoveFamilyAsync(family);
+        await executeFilter();
+    }
+
+
+  
+
+}

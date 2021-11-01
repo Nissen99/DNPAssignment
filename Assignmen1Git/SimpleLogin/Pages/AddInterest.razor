@@ -1,0 +1,36 @@
+﻿@page "/AddInterest"
+@using Models
+<h3>AddInterest</h3>
+
+<EditForm Model="@Interest" OnValidSubmit="AddInterestToChild">
+    
+    <div class="form-group"> Type:<br/>
+        <InputText @bind-Value="Interest.Type" required/>
+    </div>
+    <div class="form-group"> Description:<br/>
+        <InputTextArea @bind-Value="Interest.Description" required/>
+    </div>
+  
+    <button @onclick="Cancel" class="btn btn-secondary">Cancel</button>
+    
+    <button class="btn btn-primary" type="submit">Submit</button>
+
+</EditForm>
+
+
+@code {
+    
+    [CascadingParameter] public BlazoredModalInstance BlazoredModal { get; set; }
+
+    private Interest Interest = new Interest();
+    
+    private async Task AddInterestToChild()
+    {
+        await BlazoredModal.CloseAsync(ModalResult.Ok(Interest));
+    }
+
+    private async Task Cancel()
+    {
+        await BlazoredModal.CancelAsync();
+    }
+}

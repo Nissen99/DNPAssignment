@@ -1,0 +1,130 @@
+﻿@page "/AddAdult"
+@page "/AddAdult/{FamilyAsJson}"
+@using Models
+@using SimpleLogin.BuisnessModels
+@using System.Text.Json
+@using SimpleLogin.BuisnessModels.FamilyConnectionModels
+
+@attribute [Authorize(Policy = "MustBeAdmin")]
+@inject IModalService ModalService
+@inject IAdultModel AdultModel
+@inject IFamilyAdultModel FamilyAdultModel
+@inject NavigationManager NavigationManager 
+
+<h3>Add adult</h3>
+
+<EditForm Model="@adult" OnValidSubmit="@AddNewAdult">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+
+    <div class="form-group"> First Name:<br/> 
+        <InputText @bind-Value="adult.FirstName" required/>
+    </div>
+    <div class="form-group"> Last Name:<br/> 
+        <InputText @bind-Value="adult.LastName" required/>
+    </div>
+    <div class="form-group"> Hair color:<br/> 
+        <InputText @bind-Value="adult.HairColor" required/>
+    </div>
+    <div class="form-group"> Eye color:<br/> 
+        <InputText @bind-Value="adult.EyeColor" required/>
+    </div>
+    <div class="form-group"> Age:<br/> 
+        <InputNumber @bind-Value="adult.Age" required/>
+    </div>
+    <div class="form-group"> Weight:<br/> 
+        <InputNumber @bind-Value="adult.Weight" required/>
+    </div>
+    <div class="form-group"> Height:<br/> 
+        <InputNumber @bind-Value="adult.Height" required/>
+    </div>
+    <div class="form-group"> Sex:<br/> 
+        <InputText @bind-Value="adult.Sex" required/>
+    </div>
+    <div class="form-group"> Job title:<br/> 
+        <InputText @bind-Value="jobTitle"/>
+    </div>
+    <div class="form-group"> Salary:<br/> 
+        <InputNumber defalut="null" @bind-Value="salary"/>
+    </div>
+
+    
+    <p class="actions">
+        <button class="btn btn-outline-dark" type="submit">Create</button>
+    </p>
+</EditForm>
+
+
+
+@code {
+
+    private Adult adult = new Adult();
+
+    private string jobTitle;
+    private int? salary;
+    
+    [Parameter] public string FamilyAsJson { get; set; }
+    private Family Family;
+   
+
+    /*
+     * Laver adult i Filen om det går galt eller ej burde nok tjekke hvornår det gik galt og ryde op
+     */
+    private async Task AddNewAdult()
+    {
+        try
+        {
+            if (jobTitle!= null || salary != null)
+            {
+                adult.Job = new Job() {JobTitle = jobTitle, Salary = salary};
+            }
+            if (Family != null)
+            {
+                try
+                {
+                    Adult CreatedWithId = await AdultModel.AddAdultAsync(adult);
+                    await FamilyAdultModel.AddAdultToFamilyAsync(CreatedWithId, Family);
+                    NavigationManager.NavigateTo("/Families");
+                }
+                catch (Exception e)
+                {
+                    ModalService.Show<ErrorPage>("You can not add someone to family twice");
+                }
+            }
+            else
+            {
+                await AdultModel.AddAdultAsync(adult);
+                NavigationManager.NavigateTo("/Adults");
+            }
+        }
+        catch (Exception e)
+        {
+            //Kunne slette den lavede Adult her, hvis vi kom lang nok til den blev oprettet
+            ModalService.Show<ErrorPage>(e.Message);
+        }
+     
+
+
+    }
+    
+
+    
+    protected override void OnParametersSet()
+    {
+        try
+        {
+            Family = JsonSerializer.Deserialize<Family>(FamilyAsJson, new JsonSerializerOptions() {
+                WriteIndented = true,
+                PropertyNameCaseInsensitive = true
+            });
+            Console.WriteLine(Family.StreetName);
+        }
+        catch (Exception e)
+        {}
+
+    }
+
+
+
+
+}

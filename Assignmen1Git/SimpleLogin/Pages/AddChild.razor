@@ -1,0 +1,212 @@
+﻿@page "/AddChild/{FamilyAsJson}"
+@using Models
+@using System.Text.Json
+@using SimpleLogin.BuisnessModels
+@using SimpleLogin.BuisnessModels.FamilyConnectionModels
+@using SimpleLogin.BuisnessModels.FamilyModel
+
+@inject IFamilyChildModel FamilyChildModel
+@inject IChildModel ChildModel
+@inject IModalService ModalService
+@inject IPetModel PetModel
+@inject IFamilyPetModel FamilyPetModel
+@inject NavigationManager NavigationManager
+<h3>AddChild</h3>
+
+<!--OnSubmit buggede med de andre knapper -->
+<EditForm Model="@Child">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+
+    <div class="form-group"> First Name:<br/> 
+        <InputText @bind-Value="Child.FirstName" required/>
+    </div>
+    <div class="form-group"> Last Name:<br/> 
+        <InputText @bind-Value="Child.LastName" required/>
+    </div>
+    <div class="form-group"> Hair color:<br/> 
+        <InputText @bind-Value="Child.HairColor" required/>
+    </div>
+    <div class="form-group"> Eye color:<br/> 
+        <InputText @bind-Value="Child.EyeColor" required/>
+    </div>
+    <div class="form-group"> Age:<br/> 
+        <InputNumber @bind-Value="Child.Age" required/>
+    </div>
+    <div class="form-group"> Weight:<br/> 
+        <InputNumber @bind-Value="Child.Weight" required/>
+    </div>
+    <div class="form-group"> Height:<br/> 
+        <InputNumber @bind-Value="Child.Height" required/>
+    </div>
+    <div class="form-group"> Sex:<br/> 
+        <InputText @bind-Value="Child.Sex" required/>
+    </div>
+    <div class="form-group"> Pet:<br/> 
+        <button class="btn btn-outline-dark" @onclick="PetPopup">Add Pet</button>
+        
+        @if (Child.Pets == null || Child.Pets.Count == 0)
+    {
+        <p>
+        Not Pets Added Yet.
+            </p>
+    } 
+    else
+    {
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Species</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (Pet pet in Child.Pets)
+            {
+                <tr>
+                    <td>@pet.Name</td>
+                    <td>@pet.Age</td>
+                    <td>@pet.Species</td>
+                    <td>
+                        <button @onclick="@(() => removePet(pet))">
+                            <i class="oi oi-trash" style="color:red"/>
+                        </button>
+                    </td>
+
+
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+        </div>
+
+    <div class="form-group"> Interests:<br/> 
+        <button class="btn btn-outline-dark" @onclick="IntestPupup">Add Interests</button>
+    
+      @if (Child.Interests == null || Child.Interests.Count == 0)
+        {
+            <p>
+            Not Interests Added Yet.
+                </p>
+        } 
+        else
+        {
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (Interest interest in Child.Interests)
+                {
+                    <tr>
+                        <td>@interest.Type</td>
+                        <td>@interest.Description</td>
+                        <td>
+                            <button @onclick="@(() => removeInterest(interest))">
+                                <i class="oi oi-trash" style="color:red"/>
+                            </button>
+                        </td>
+    
+    
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+            </div>
+
+
+    <br/>
+    <p class="actions">
+        <button class="btn btn-outline-dark" @onclick="AddNewChild">Create</button>
+    </p>
+</EditForm>
+
+
+
+
+@code {
+
+    private Child Child = new Child();
+    
+    [Parameter]
+    public string FamilyAsJson { get; set; }
+
+    private Family Family;
+
+    protected override void OnParametersSet()
+    {
+        Family = JsonSerializer.Deserialize<Family>(FamilyAsJson, new JsonSerializerOptions()
+        {
+            WriteIndented = true,
+            PropertyNameCaseInsensitive = true
+        });
+    }
+
+ 
+    private async Task AddNewChild()
+    {
+        Child childToAdd = await ChildModel.AddChildAsync(Child);
+        await FamilyChildModel.AddChildToFamilyAsync(childToAdd, Family);
+        foreach (var pet in childToAdd.Pets)
+        {
+            await FamilyPetModel.AddPetToFamilyAsync(Family, pet);
+        }
+        NavigationManager.NavigateTo("/Families");
+    }
+
+   
+   
+    private async void PetPopup()
+    {
+        var form = ModalService.Show<AddPet>("Pet will be added to family aswell");
+        var result = await form.Result;
+        Pet pet = null;
+        if (!result.Cancelled)
+        {
+            pet = (Pet) result.Data;
+            pet = await PetModel.AddPetAsync(pet);
+            if (Child.Pets == null)
+            {
+                Child.Pets = new List<Pet>();
+            }
+            Child.Pets.Add(pet);
+            StateHasChanged(); //Ved ikke hvorfor den ikke auto updater når man adder til list men fix
+        }
+
+    }
+
+    private void removePet(Pet pet)
+    {
+        Child.Pets.Remove(pet);
+    }
+
+    private async Task IntestPupup()
+    {
+        var form = ModalService.Show<AddInterest>();
+        var result = await form.Result;
+        Interest interest = null;
+        if (!result.Cancelled)
+        {
+            interest = (Interest) result.Data;
+            if (Child.Interests == null)
+            {
+                Child.Interests = new List<Interest>();
+            }
+            Child.Interests.Add(interest);
+            StateHasChanged(); //Ved ikke hvorfor den ikke auto updater når man adder til list men fix
+        }
+    }
+
+    private void removeInterest(Interest interest)
+    {
+        Child.Interests.Remove(interest);
+    }
+
+}

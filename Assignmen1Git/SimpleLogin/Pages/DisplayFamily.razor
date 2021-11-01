@@ -1,0 +1,321 @@
+﻿@page "/DisplayFamily/{FamilyAsJson}"
+@using Models
+@using System.Text.Json
+@using SimpleLogin.BuisnessModels
+@using SimpleLogin.BuisnessModels.FamilyConnectionModels
+@using SimpleLogin.BuisnessModels.FamilyModel
+@inject IAdultModel AdultModel
+@inject IFamilyModel FamilyModel
+@inject IFamilyAdultModel FamilyAdultModel 
+@inject IModalService ModalService
+@inject IChildModel ChildModel
+@inject NavigationManager NavigationManager
+@inject IPetModel PetModel
+@inject IFamilyPetModel FamilyPetModel
+
+<!-- Child interests not shown only count(could be popup or something-->
+
+<h2>Family Name: @Family.Name</h2>
+<h2>Where they live: @Family.StreetName @Family.HouseNumber</h2>
+<br/>
+
+<h2>Family Members</h2>
+
+
+@if (Family.Adults == null || Family.Children == null || Family.Pets == null)
+{
+    <p>
+      <em>Loading...</em>  
+    </p>
+}
+else if (!Family.Adults.Any())
+{
+    <br/>
+    <h4>Adults
+      <Authorized Roles="Admin">
+                               <AuthorizeView>
+                               <button 
+                                   @onclick="AddAdultToFamily">+
+                               </button>
+                                </AuthorizeView>
+        </Authorized>
+        </h4>
+    <br/>
+    <p>
+        <em>No Adults in this Family.</em>
+    </p>
+}
+else{
+    <br/>
+    <h4>Adults  
+                       <Authorized Roles="Admin">
+                           <AuthorizeView>
+                           <button 
+                               @onclick="AddAdultToFamily"> +
+                           </button>
+                                              </AuthorizeView>
+                                           </Authorized>
+        </h4>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Hair color</th>
+            <th>Eye color</th>
+            <th>Age</th>
+            <th>Weight</th>
+            <th>Height</th>
+            <th>Sex</th>
+            <th>Job title</th>
+            <th>Salary</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var adult in Family.Adults)
+        {
+            <tr>
+
+                <td>@adult.Id</td>
+                <td>@adult.FirstName</td>
+                <td>@adult.LastName</td>
+                <td>@adult.HairColor</td>
+                <td>@adult.EyeColor</td>
+                <td>@adult.Age</td>
+                <td>@adult.Weight</td>
+                <td>@adult.Height</td>
+                <td>@adult.Sex</td>
+                @if (adult.Job != null)
+                {
+                    if (adult.Job.JobTitle != null)
+                    {
+                        <td>@adult.Job.JobTitle</td>
+                    }
+                    else
+                    {
+                        <td>NaN</td>
+                    }  
+                    if (adult.Job.Salary != null)
+                    {
+                        <td>@adult.Job.Salary</td>
+                    }
+                    else
+                    {
+                        <td>NaN</td>
+                    }
+                }
+                else
+                {
+                    <td>NaN</td>
+                    <td>NaN</td>
+                }
+                
+        <Authorized Roles="Admin">
+            <AuthorizeView>
+            <td>
+                <button @onclick="@(() => removeAdultFromFamily(adult))">
+                    <i class="oi oi-trash" style="color:red"/>
+                </button>
+            </td>
+             </AuthorizeView>
+                    </Authorized>
+
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+<br/>
+<h4>Children 
+                    <Authorized Roles="Admin">
+                        <AuthorizeView>
+                        <button 
+                            @onclick="AddChildToFamily">+
+                        </button>
+                   </AuthorizeView>
+                </Authorized>
+                        </h4>
+
+@if (!Family.Children.Any())
+{
+    <p>
+        <em>No children in this Family.</em>
+    </p>
+}
+else
+{
+   
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Hair color</th>
+            <th>Eye color</th>
+            <th>Age</th>
+            <th>Weight</th>
+            <th>Height</th>
+            <th>Sex</th>
+            <th>Pets</th>
+            <th>Interests</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var child in Family.Children)
+        {
+            <tr>
+
+                <td>@child.Id</td>
+                <td>@child.FirstName</td>
+                <td>@child.LastName</td>
+                <td>@child.HairColor</td>
+                <td>@child.EyeColor</td>
+                <td>@child.Age</td>
+                <td>@child.Weight</td>
+                <td>@child.Height</td>
+                <td>@child.Sex</td>
+                <td>@child.Pets.Count</td>
+                <td>@child.Interests.Count</td>
+
+                <Authorized Roles="Admin">
+                    <AuthorizeView>
+                        <td>
+                            <button @onclick="@(() => removeChildFromFamily(child))">
+                                <i class="oi oi-trash" style="color:red"/>
+                            </button>
+                        </td>
+                    </AuthorizeView>
+                </Authorized>
+
+            </tr>
+        }
+        
+        </tbody>
+    </table>
+}
+
+<br/>
+<h4>Pets 
+                    <Authorized Roles="Admin">
+                        <AuthorizeView>
+                        <button 
+                            @onclick="AddPetToFamily"> +
+                        </button>
+                                           </AuthorizeView>
+                                        </Authorized>
+    </h4>
+
+
+@if (!Family.Pets.Any())
+{
+    <p>
+        <em>No Pets in the Family.</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Species</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var pet in Family.Pets)
+        {
+            <tr>
+
+                <td>@pet.Id</td>
+                <td>@pet.Name</td>
+                <td>@pet.Age</td>
+                <td>@pet.Species</td>
+                
+                <Authorized Roles="Admin">
+                    <AuthorizeView>
+                        <td>
+                            <button @onclick="@(() => removePetFromFamily(pet))">
+                                <i class="oi oi-trash" style="color:red"/>
+                            </button>
+                        </td>
+                    </AuthorizeView>
+                </Authorized>
+
+            </tr>
+        }
+        
+        </tbody>
+    </table>
+}
+
+
+@code {
+
+    [Parameter]
+    public string FamilyAsJson { get; set; }
+
+    private Family Family;
+
+    protected override void OnParametersSet()
+    {
+        Family = JsonSerializer.Deserialize<Family>(FamilyAsJson, new JsonSerializerOptions()
+        {
+            WriteIndented = true,
+            PropertyNameCaseInsensitive = true
+        });
+    }
+
+    private async Task removeAdultFromFamily(Adult adult)
+    {
+        await FamilyAdultModel.RemoveAdultFromFamilyAsync(Family, adult);
+        NavigationManager.NavigateTo("/Families");
+    }
+
+    private void AddAdultToFamily()
+    {
+        ModalParameters parameters = new ModalParameters();
+        parameters.Add("Family", Family);
+        ModalService.Show<AddNewPersonChoice>("Make new person or choose existing", parameters);
+
+    }
+
+    /*
+     * Når man remover child bliver det childs pet stadigvæk
+     * Det kan fixes med et hurtigt loop hvis det ønskes
+     */
+    private void removeChildFromFamily(Child child)
+    {
+        ChildModel.RemoveChildAsync(Family, child);
+    }
+
+    private async Task removePetFromFamily(Pet pet)
+    {
+        await PetModel.RemovePetAsync(Family, pet);
+    }
+
+    private void AddChildToFamily()
+    {
+        NavigationManager.NavigateTo($"/AddChild/{FamilyAsJson}");
+    }
+
+    private async Task AddPetToFamily()
+    {
+        var form = ModalService.Show<AddPet>();
+        var result = await form.Result;
+        Pet pet = null;
+        if (!result.Cancelled)
+        {
+            pet = (Pet) result.Data;
+            pet = await PetModel.AddPetAsync(pet);
+            await FamilyPetModel.AddPetToFamilyAsync(Family, pet);
+        }
+    }
+
+}

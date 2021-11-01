@@ -1,0 +1,42 @@
+﻿@page "/AddPet"
+@using Models
+@using SimpleLogin.BuisnessModels.FamilyModel
+@inject IPetModel PetModel
+
+<h3>AddPet</h3>
+
+<EditForm Model="@Pet" OnValidSubmit="AddPetToChild">
+    
+    <div class="form-group"> Name:<br/>
+        <InputText @bind-Value="Pet.Name" required/>
+    </div>
+    <div class="form-group"> Age:<br/>
+        <InputNumber @bind-Value="Pet.Age" required/>
+    </div>
+    <div class="form-group"> Species:<br/>
+        <InputText @bind-Value="Pet.Species" required/>
+    </div>
+    
+    <button @onclick="Cancel" class="btn btn-secondary">Cancel</button>
+    
+    <button class="btn btn-primary" type="submit">Submit</button>
+
+</EditForm>
+
+@code {
+    [CascadingParameter] public BlazoredModalInstance BlazoredModal { get; set; }
+    private Pet Pet = new Pet();
+
+    private async Task AddPetToChild()
+    {
+        Pet = await PetModel.AddPetAsync(Pet);
+        await BlazoredModal.CloseAsync(ModalResult.Ok(Pet));
+    }
+
+    private async Task Cancel()
+    {
+        
+        await BlazoredModal.CancelAsync();
+    }
+
+}
