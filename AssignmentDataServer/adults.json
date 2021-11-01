@@ -25,5 +25,20 @@
     "Weight": 13,
     "Height": 31,
     "Sex": "j"
+  },
+  {
+    "Job": {
+      "JobTitle": "ads",
+      "Salary": 123
+    },
+    "Id": 6,
+    "FirstName": "sad",
+    "LastName": "asd",
+    "HairColor": "sad",
+    "EyeColor": "sda",
+    "Age": 123,
+    "Weight": 123,
+    "Height": 123,
+    "Sex": "asd"
   }
 ]

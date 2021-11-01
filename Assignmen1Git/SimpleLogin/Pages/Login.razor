@@ -13,9 +13,11 @@
     <label>Password</label>
     <input type="text" placeholder="password" @bind-value="password"/>
 </div>
+
+<button class="btn btn-primary" @onclick="PerformLogin">Login </button>
+
 @errorMessage
 
-<button class="btn btn-primary" @onclick="PerformLogin">Login</button>
 
 @code {
     private string username;
@@ -25,7 +27,7 @@
     public async Task PerformLogin() {
         errorMessage = "";
         try {
-            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).ValidateLogin(username, password);
+             await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).ValidateLoginAsync(username, password);
             Console.WriteLine("Logged in succesfully");
             NavigationManager.NavigateTo("/");
         } catch (Exception e) {

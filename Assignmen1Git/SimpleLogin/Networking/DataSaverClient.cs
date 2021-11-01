@@ -16,7 +16,7 @@ namespace SimpleLogin.Networking
         
         public async Task AddFamilyAsync(Family family)
         {
-            HttpClient httpClient = new HttpClient();
+            using HttpClient httpClient = new HttpClient();
             
             string familyAsJson = JsonSerializer.Serialize(family);
 
@@ -30,7 +30,7 @@ namespace SimpleLogin.Networking
 
         public async Task<IList<Family>> GetAllFamiliesAsync()
         {
-            HttpClient httpClient = new HttpClient();
+            using HttpClient httpClient = new HttpClient();
             
             HttpResponseMessage responseMessage = await httpClient.GetAsync(uri + "/Family");
             
@@ -47,7 +47,7 @@ namespace SimpleLogin.Networking
 
         public async Task<Adult> AddAdultAsync(Adult adult)
         {            
-            HttpClient httpClient = new HttpClient();
+            using HttpClient httpClient = new HttpClient();
 
             string adultAsJson = JsonSerializer.Serialize(adult);
             StringContent adultAsStringContent = new StringContent(adultAsJson, Encoding.UTF8, "application/json");
@@ -85,7 +85,7 @@ namespace SimpleLogin.Networking
 
         public async Task UpDateFamilyAsync(Family family)
         {
-            HttpClient httpClient = new HttpClient();
+            using HttpClient httpClient = new HttpClient();
             string FamilyAsJson = JsonSerializer.Serialize(family);
 
             StringContent FamilyAsStringContent = new StringContent(FamilyAsJson, Encoding.UTF8, "application/json");
@@ -99,7 +99,7 @@ namespace SimpleLogin.Networking
 
         public async Task RemoveAdultAsync(Adult adult)
         {
-            HttpClient httpClient = new HttpClient();
+            using HttpClient httpClient = new HttpClient();
             HttpResponseMessage responseMessage = await httpClient.DeleteAsync(uri + $"/Adult?Id={adult.Id}");
             
             RequestCodeCheck(responseMessage);
@@ -118,7 +118,7 @@ namespace SimpleLogin.Networking
 
         public async Task RemoveFamilyAsync(Family family)
         {
-            HttpClient httpClient = new HttpClient();
+            using HttpClient httpClient = new HttpClient();
             
             HttpResponseMessage responseMessage = await httpClient.DeleteAsync(uri + $"/Family?HouseNumber={family.HouseNumber}&&StreetName={family.StreetName}");
             
@@ -132,7 +132,7 @@ namespace SimpleLogin.Networking
          */
         public async Task<Child> AddChildAsync(Child child)
         {
-            HttpClient httpClient = new HttpClient();
+            using HttpClient httpClient = new HttpClient();
 
             string childAsJson = JsonSerializer.Serialize(child);
             StringContent childAsStringContent = new StringContent(childAsJson, Encoding.UTF8, "application/json");
@@ -153,7 +153,7 @@ namespace SimpleLogin.Networking
 
         public async Task<Pet> AddPetAsync(Pet pet)
         {
-            HttpClient httpClient = new HttpClient();
+            using HttpClient httpClient = new HttpClient();
 
             string petAsJson = JsonSerializer.Serialize(pet);
             

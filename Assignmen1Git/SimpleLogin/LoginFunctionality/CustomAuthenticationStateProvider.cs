@@ -72,7 +72,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
     }
 
     // function will tell the app that user is authenticated and save the state in the session store if authenticated through the _comm.
-    public async Task ValidateLogin(string username, string password) {
+        public async Task ValidateLoginAsync(string username, string password) {
         Console.WriteLine("Validating log in");
 
         if (string.IsNullOrEmpty(username)) throw new Exception("Enter username");
@@ -108,6 +108,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
         } catch (Exception e) {
             Console.WriteLine(e);
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal())));
+            throw;
         }
     }
 

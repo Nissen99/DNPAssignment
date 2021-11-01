@@ -186,6 +186,10 @@ namespace AssignmentDataServer.Persistence
             if (user != null) {
                 Console.WriteLine("Found user");
             }
+            else
+            {
+                throw new Exception("User not found");
+            }
 
             return user;
         }
