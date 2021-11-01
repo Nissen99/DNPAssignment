@@ -10,10 +10,9 @@ namespace AssignmentDataServer.Persistence
     public class FileContext : IDataSaver
     {
         public IList<Family> Families { get; private set; }
-
-
         public IList<Adult> Adults { get; private set; }
         
+        //Kan lagt i fil, men lige nu er den hard coded
         private List<User> users;
 
         private readonly string familiesFile = "families.json";
@@ -71,6 +70,7 @@ namespace AssignmentDataServer.Persistence
         }
 
         
+        
         /*
          * Så længe denne metode burges til alt givning af Id sikre vi os at 2 ting ikke har samme id
          */
@@ -103,8 +103,6 @@ namespace AssignmentDataServer.Persistence
                         }
                     }
 
-
-
                     if (family.Pets.Count != 0)
                     {
                         int maxIdForPets = family.Pets.Max(maxId => maxId.Id);
@@ -113,7 +111,6 @@ namespace AssignmentDataServer.Persistence
                         {
                             id = maxIdForPets;
                         }
-
                     }
 
                     if (family.Adults.Count != 0)
@@ -123,11 +120,9 @@ namespace AssignmentDataServer.Persistence
                         {
                             id = maxIdAdults;
                         }
-                    }    
-                
+                    }
                 }
                 catch (Exception e) { }
-             
             }
             try
             {
@@ -146,6 +141,7 @@ namespace AssignmentDataServer.Persistence
             return ++id;
         }
 
+        
         public void UpdateFamily(Family family)
         {
             IList<Family> allFamilies = Families;
@@ -173,15 +169,9 @@ namespace AssignmentDataServer.Persistence
             Families.Remove(familyToRemove);
             SaveChanges();
         }
-
-        public List<User> GetAllUsers()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public User ValidateUser(string username, string password)
         {
-            
             var user = users.Find(u => u.Username.Equals(username) && u.Password.Equals(password));
             if (user != null) {
                 Console.WriteLine("Found user");
@@ -194,6 +184,7 @@ namespace AssignmentDataServer.Persistence
             return user;
         }
 
+        
         private IList<T> ReadData<T>(string s)
         {
             using (var jsonReader = File.OpenText(s))
@@ -228,7 +219,6 @@ namespace AssignmentDataServer.Persistence
                 outputFile.Write(jsonAdults);
             }
             
-      
         }
     }
 }

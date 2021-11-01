@@ -14,7 +14,6 @@ namespace AssignmentDataServer.Persistence
         int GetNextId();
         void UpdateFamily(Family family);
         void RemoveFamily(int? houseNumber, string streetName);
-        List<User> GetAllUsers();
         User ValidateUser(string username, string password);
     }
 }

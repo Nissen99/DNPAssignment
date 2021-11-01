@@ -15,8 +15,6 @@ namespace SimpleLogin.BuisnessModels.FamilyConnectionModels
             this.dataSaverClient = dataSaverClient;
         }
         
-        
-       
         public async Task RemoveAdultFromFamilyAsync(Family family, Adult adult)
         {
             family.Adults.Remove(adult);
