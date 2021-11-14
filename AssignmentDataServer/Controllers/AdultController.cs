@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AssignmentDataServer.Models;
 using AssignmentDataServer.Persistence;
+using AssignmentDataServer.Util;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssignmentDataServer.Controllers
@@ -24,7 +25,7 @@ namespace AssignmentDataServer.Controllers
         [HttpGet]
         public ActionResult<IList<Adult>> GetAdults()
         {
-            IList<Adult> allAdults = DataSaver.Adults;
+            IList<Adult> allAdults = DataSaver.GetAllAdults();
 
             if (allAdults.Count == 0)
             {
@@ -59,7 +60,7 @@ namespace AssignmentDataServer.Controllers
             Adult adultToRemove;
             try
             {
-                adultToRemove  = DataSaver.Adults.First(a => a.Id == Id);
+                adultToRemove  = DataSaver.GetAllAdults().First(a => a.Id == Id);
 
             }
             catch (Exception e)

@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
+using SimpleLogin.Data;
 using SimpleLogin.Networking;
 
 public class CustomAuthenticationStateProvider : AuthenticationStateProvider { 
@@ -63,8 +64,8 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
         claims.Add(new Claim(ClaimTypes.Name, user.Username));
         claims.Add(new Claim(ClaimTypes.Role, user.Username));
 
-        foreach (string role in user.Roles) {
-            claims.Add(new Claim("Role", role));
+        foreach (Role role in user.Roles) {
+            claims.Add(new Claim("Role", role.RoleName));
         }
 
         identity = new ClaimsIdentity(claims, "apiauth_type");

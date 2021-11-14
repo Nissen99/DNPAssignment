@@ -85,7 +85,7 @@
         </div>
 
     <div class="form-group"> Interests:<br/> 
-        <button class="btn btn-outline-dark" @onclick="IntestPupup">Add Interests</button>
+        <button class="btn btn-outline-dark" @onclick="InterestPupup">Add Interests</button>
     
       @if (Child.Interests == null || Child.Interests.Count == 0)
         {
@@ -155,10 +155,7 @@
     {
         Child childToAdd = await ChildModel.AddChildAsync(Child);
         await FamilyChildModel.AddChildToFamilyAsync(childToAdd, Family);
-        foreach (var pet in childToAdd.Pets)
-        {
-            await FamilyPetModel.AddPetToFamilyAsync(Family, pet);
-        }
+    
         NavigationManager.NavigateTo("/Families");
     }
 
@@ -172,7 +169,6 @@
         if (!result.Cancelled)
         {
             pet = (Pet) result.Data;
-            pet = await PetModel.AddPetAsync(pet);
             if (Child.Pets == null)
             {
                 Child.Pets = new List<Pet>();
@@ -188,7 +184,7 @@
         Child.Pets.Remove(pet);
     }
 
-    private async Task IntestPupup()
+    private async Task InterestPupup()
     {
         var form = ModalService.Show<AddInterest>();
         var result = await form.Result;

@@ -29,7 +29,6 @@
 
     private async Task AddPetToChild()
     {
-        Pet = await PetModel.AddPetAsync(Pet);
         await BlazoredModal.CloseAsync(ModalResult.Ok(Pet));
     }
 

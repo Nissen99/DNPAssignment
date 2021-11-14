@@ -1,6 +1,10 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AssignmentDataServer.Models {
+    
+    //TODO Could limit Adult and children list (dont know how)
 public class Family {
     
     //public int Id { get; set; }

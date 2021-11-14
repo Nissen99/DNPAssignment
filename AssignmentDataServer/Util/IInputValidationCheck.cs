@@ -1,6 +1,6 @@
 ﻿using AssignmentDataServer.Models;
 
-namespace AssignmentDataServer
+namespace AssignmentDataServer.Util
 {
     public interface IInputValidationCheck
     {

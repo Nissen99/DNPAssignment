@@ -1,7 +1,6 @@
-﻿using System;
-using AssignmentDataServer.Models;
+﻿using AssignmentDataServer.Models;
 
-namespace AssignmentDataServer
+namespace AssignmentDataServer.Util
 {
     public class InputValidationCheck : IInputValidationCheck
     {

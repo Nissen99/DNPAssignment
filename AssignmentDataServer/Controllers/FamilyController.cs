@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AssignmentDataServer.Models;
 using AssignmentDataServer.Persistence;
+using AssignmentDataServer.Util;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssignmentDataServer.Controllers
@@ -47,7 +48,7 @@ namespace AssignmentDataServer.Controllers
 
             if (StreetName == null && HouseNumber == null)
             {
-                IList<Family> allFamilies = DataSaver.Families;
+                IList<Family> allFamilies = DataSaver.GetAllFamilies();
             
                 if (allFamilies.Count == 0)
                 {
@@ -59,7 +60,7 @@ namespace AssignmentDataServer.Controllers
 
             try
             {
-                Family Family = DataSaver.Families.First(f =>
+                Family Family = DataSaver.GetAllFamilies().First(f =>
                     f.StreetName.Equals(StreetName) && f.HouseNumber == HouseNumber);
                 return Ok(Family);
             }
@@ -87,7 +88,7 @@ namespace AssignmentDataServer.Controllers
             }
             catch (Exception e)
             {
-                return NotFound();
+                return NotFound("Could Not find Family ");
             }
 
             return Ok();

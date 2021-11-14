@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace Models {
+namespace SimpleLogin.Models {
 public class Person {
 
 

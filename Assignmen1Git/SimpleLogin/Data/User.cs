@@ -1,11 +1,26 @@
-﻿public class User {
-    public string Username { get; set; }
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
-    public string Password { get; set; }
+namespace SimpleLogin.Data
+{
+    public class User {
+    
+        [Key] public string Username { get; set; }
 
-    public string[] Roles { get; set; }
+        [NotNull] public string Password { get; set; }
 
-    public override string ToString() {
-        return Username;
+        //The property 'User.Roles' could not be mapped because it is of type 'string[]', which is not a supported primitive type or a valid entity type.
+        //So made to to IList
+        public List<Role> Roles {get; set;}
+
+        public User()
+        {
+            Roles = new List<Role>();
+        }
+
+        public override string ToString() {
+            return Username;
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using AssignmentDataServer.Models;
 using AssignmentDataServer.Persistence;
+using AssignmentDataServer.Util;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssignmentDataServer.Controllers
@@ -35,7 +36,7 @@ namespace AssignmentDataServer.Controllers
                 return BadRequest();
             }
 
-            child.Id = DataSaver.GetNextId();
+            DataSaver.AddChild(child);
             return Created("New Id: " + child.Id, child);
         }
 

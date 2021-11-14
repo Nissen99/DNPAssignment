@@ -1,4 +1,5 @@
-﻿using AssignmentDataServer.Models;
+﻿using System;
+using AssignmentDataServer.Models;
 using AssignmentDataServer.Persistence;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,8 +21,10 @@ namespace AssignmentDataServer.Controllers
         [HttpPost]
         public ActionResult<Pet> AddPet([FromBody] Pet pet)
         {
-            pet.Id = DataSaver.GetNextId();
-            return Ok(pet);
+            Console.WriteLine("BEFORE: " + pet.Id);
+            DataSaver.AddPet(pet);
+            Console.WriteLine("AFTER: " + pet.Id);
+            return Created("New Id: " + pet.Id, pet);
         }
     }
 }

@@ -1,11 +1,9 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+namespace SimpleLogin.Models {
+    public class Interest {
+    
+        public int InterestId { get; set; }
+        public string Type { get; set; }
+        public string Description { get; set; }
 
-namespace Models {
-public class Interest {
-    public string Type { get; set; }
-    public string Description { get; set; }
-
-}
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AssignmentDataServer.Data;
 using AssignmentDataServer.Models;
 
 namespace AssignmentDataServer.Persistence
@@ -7,13 +8,13 @@ namespace AssignmentDataServer.Persistence
     {
         void AddAdult(Adult adult);
         void AddFamily(Family family);
-        public IList<Adult> Adults { get; }
-        public IList<Family> Families { get; }
-        public void SaveChanges();
+        IList<Adult> GetAllAdults();
+        IList<Family> GetAllFamilies();
         void RemoveAdult(Adult adult);
-        int GetNextId();
         void UpdateFamily(Family family);
         void RemoveFamily(int? houseNumber, string streetName);
+        void AddChild(Child child);
         User ValidateUser(string username, string password);
+        void AddPet(Pet pet);
     }
 }
