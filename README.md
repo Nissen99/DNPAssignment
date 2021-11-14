@@ -1,5 +1,6 @@
 # DNPAssignment2
 
-REST application used to controll Families. 
+REST application used to control Families. 
 
-Currently uses File to store data, for database version look DNPAssignment3.
+
+Main Branch stores in File, for entity framework database solution look at Branch Version 3
