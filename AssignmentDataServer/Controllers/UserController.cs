@@ -14,11 +14,11 @@ namespace AssignmentDataServer.Controllers
     public class UserController : ControllerBase
     {
 
-        private IDataSaver DataSaver;
+        private IUserDAO userDao;
 
-        public UserController(IDataSaver dataSaver)
+        public UserController(IUserDAO userDao)
         {
-            DataSaver = dataSaver;
+            this.userDao = userDao;
         }
         
         
@@ -37,7 +37,7 @@ namespace AssignmentDataServer.Controllers
 
             try
             {
-                return Ok(DataSaver.ValidateUser(username, password));
+                return Ok(userDao.ValidateUser(username, password));
 
             }
             catch (Exception e)
@@ -45,23 +45,7 @@ namespace AssignmentDataServer.Controllers
                 return NotFound();
             }
             
-
         }
-
         
-        
-        private ClaimsIdentity SetupClaimsForUser(User user) {
-            ClaimsIdentity identity;
-            List<Claim> claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Name, user.Username));
-            claims.Add(new Claim(ClaimTypes.Role, user.Username));
-
-            foreach (Role role in user.Roles) {
-                claims.Add(new Claim("Role", role.RoleName));
-            }
-
-            identity = new ClaimsIdentity(claims, "apiauth_type");
-            return identity;
-        }
     }
 }

@@ -12,20 +12,20 @@ namespace AssignmentDataServer.Controllers
     [Route("[controller]")]
     public class AdultController : ControllerBase
     {
-        private IDataSaver DataSaver;
+        private IAdultDAO adultDao;
         private IInputValidationCheck inputValidationCheck;
         
 
-        public AdultController(IDataSaver dataSaver, IInputValidationCheck inputValidationCheck)
+        public AdultController(IAdultDAO adultDao, IInputValidationCheck inputValidationCheck)
         {
-            DataSaver = dataSaver;
+            this.adultDao = adultDao;
             this.inputValidationCheck = inputValidationCheck;
         }
 
         [HttpGet]
         public ActionResult<IList<Adult>> GetAdults()
         {
-            IList<Adult> allAdults = DataSaver.GetAllAdults();
+            IList<Adult> allAdults = adultDao.GetAllAdults();
 
             if (allAdults.Count == 0)
             {
@@ -47,7 +47,7 @@ namespace AssignmentDataServer.Controllers
             }
       
         
-            DataSaver.AddAdult(adult);
+            adultDao.AddAdult(adult);
             return Created("New Id: " + adult.Id, adult);
         }
 
@@ -60,7 +60,7 @@ namespace AssignmentDataServer.Controllers
             Adult adultToRemove;
             try
             {
-                adultToRemove  = DataSaver.GetAllAdults().First(a => a.Id == Id);
+                adultToRemove  = adultDao.GetAllAdults().First(a => a.Id == Id);
 
             }
             catch (Exception e)
@@ -68,7 +68,7 @@ namespace AssignmentDataServer.Controllers
                 return NotFound();
             }
             
-            DataSaver.RemoveAdult(adultToRemove);
+            adultDao.RemoveAdult(adultToRemove);
             
 
             return Ok();

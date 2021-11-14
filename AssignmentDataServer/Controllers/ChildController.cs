@@ -12,35 +12,29 @@ namespace AssignmentDataServer.Controllers
 
     public class ChildController : ControllerBase
     {
-        private IDataSaver DataSaver;
+        private IChildDAO childDao;
         private IInputValidationCheck inputValidationCheck;
 
 
-        public ChildController(IDataSaver dataSaver, IInputValidationCheck inputValidationCheck)
+        public ChildController(IChildDAO childDao, IInputValidationCheck inputValidationCheck)
         {
-            DataSaver = dataSaver;
+            this.childDao = childDao;
             this.inputValidationCheck = inputValidationCheck;
 
         }
 
-
-        /*
-         * Gemmer ikke pt Child objecter, men lavet så den kan i fremtiden, for nu er det en fancy id generator 
-         */
+        
+        
         [HttpPost]
         public ActionResult<Child> AddChild([FromBody] Child child)
         {
-
             if (!inputValidationCheck.CheckValidPerson(child))
             {
                 return BadRequest();
             }
-
-            DataSaver.AddChild(child);
+            childDao.AddChild(child);
             return Created("New Id: " + child.Id, child);
         }
-
-
     }
 
  

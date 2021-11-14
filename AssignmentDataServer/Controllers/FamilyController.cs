@@ -13,13 +13,13 @@ namespace AssignmentDataServer.Controllers
     [Route("[controller]")]
     public class FamilyController : ControllerBase
     {
-        private IDataSaver DataSaver;
+        private IFamilyDAO familyDao;
         private IInputValidationCheck inputValidationCheck;
 
 
-        public FamilyController(IDataSaver dataSaver, IInputValidationCheck inputValidationCheck)
+        public FamilyController(IFamilyDAO familyDao, IInputValidationCheck inputValidationCheck)
         {
-            DataSaver = dataSaver;
+            this.familyDao = familyDao;
             this.inputValidationCheck = inputValidationCheck;
 
         }
@@ -37,7 +37,7 @@ namespace AssignmentDataServer.Controllers
                 return BadRequest("Family needs Primay key, StreetName + House number");
             }
             
-            DataSaver.AddFamily(family);
+            familyDao.AddFamily(family);
             return Created("Family created", family);
 
         }
@@ -48,7 +48,7 @@ namespace AssignmentDataServer.Controllers
 
             if (StreetName == null && HouseNumber == null)
             {
-                IList<Family> allFamilies = DataSaver.GetAllFamilies();
+                IList<Family> allFamilies = familyDao.GetAllFamilies();
             
                 if (allFamilies.Count == 0)
                 {
@@ -60,7 +60,7 @@ namespace AssignmentDataServer.Controllers
 
             try
             {
-                Family Family = DataSaver.GetAllFamilies().First(f =>
+                Family Family = familyDao.GetAllFamilies().First(f =>
                     f.StreetName.Equals(StreetName) && f.HouseNumber == HouseNumber);
                 return Ok(Family);
             }
@@ -83,7 +83,7 @@ namespace AssignmentDataServer.Controllers
 
             try
             {
-                DataSaver.UpdateFamily(family);
+                familyDao.UpdateFamily(family);
 
             }
             catch (Exception e)
@@ -105,7 +105,7 @@ namespace AssignmentDataServer.Controllers
 
             try
             {
-                DataSaver.RemoveFamily(HouseNumber, StreetName);
+                familyDao.RemoveFamily(HouseNumber, StreetName);
 
             }
             catch (Exception e)

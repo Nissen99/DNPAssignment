@@ -10,11 +10,11 @@ namespace AssignmentDataServer.Controllers
     public class PetController : ControllerBase
     {
         
-        private IDataSaver DataSaver;
+        private IPetDAO petDao;
 
-        public PetController(IDataSaver dataSaver)
+        public PetController(IPetDAO petDao)
         {
-            DataSaver = dataSaver;
+            this.petDao = petDao;
         }
 
 
@@ -22,7 +22,7 @@ namespace AssignmentDataServer.Controllers
         public ActionResult<Pet> AddPet([FromBody] Pet pet)
         {
             Console.WriteLine("BEFORE: " + pet.Id);
-            DataSaver.AddPet(pet);
+            petDao.AddPet(pet);
             Console.WriteLine("AFTER: " + pet.Id);
             return Created("New Id: " + pet.Id, pet);
         }
