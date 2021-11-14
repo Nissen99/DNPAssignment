@@ -1,6 +1,5 @@
 # DNPAssignment2
 
-REST application used to control Families. 
+REST application used to controll Families. 
 
-
-Main Branch stores in File, for entity framework database solution look at Branch Version 3
+Upgrade from Assignment2, assignment3 was to put database on assignemt2
