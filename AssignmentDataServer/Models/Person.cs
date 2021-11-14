@@ -6,14 +6,14 @@ public class Person {
 
 
     [Key] public int Id { get; set; }
-    [NotNull] public string FirstName { get; set; }
-    [NotNull] public string LastName { get; set; }
-    [NotNull] public string HairColor { get; set; }
-    [NotNull] public string EyeColor { get; set; }
-    [NotNull] public int Age { get; set; }
-    [NotNull] public float Weight { get; set; }
-    [NotNull] public int Height { get; set; }
-    [NotNull] public string Sex { get; set; }
+    [Required] public string FirstName { get; set; }
+    [Required] public string LastName { get; set; }
+    [Required] public string HairColor { get; set; }
+    [Required] public string EyeColor { get; set; }
+    [Required] public int Age { get; set; }
+    [Required] public float Weight { get; set; }
+    [Required] public int Height { get; set; }
+    [Required] public string Sex { get; set; }
 }
 
 
