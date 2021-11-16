@@ -1,6 +1,6 @@
 ﻿using Entity.Models;
 using AssignmentDataServer.Persistence;
-using AssignmentDataServer.Util;
+using Entity.Util;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssignmentDataServer.Controllers
@@ -11,13 +11,13 @@ namespace AssignmentDataServer.Controllers
     public class ChildController : ControllerBase
     {
         private IChildDAO childDao;
-        private IInputValidationCheck inputValidationCheck;
+        private IPersonInputValidation inputValidation;
 
 
-        public ChildController(IChildDAO childDao, IInputValidationCheck inputValidationCheck)
+        public ChildController(IChildDAO childDao, IPersonInputValidation personInputValidation)
         {
             this.childDao = childDao;
-            this.inputValidationCheck = inputValidationCheck;
+            inputValidation = personInputValidation;
 
         }
 
@@ -26,7 +26,7 @@ namespace AssignmentDataServer.Controllers
         [HttpPost]
         public ActionResult<Child> AddChild([FromBody] Child child)
         {
-            if (!inputValidationCheck.CheckValidPerson(child))
+            if (!inputValidation.CheckValidPerson(child))
             {
                 return BadRequest();
             }

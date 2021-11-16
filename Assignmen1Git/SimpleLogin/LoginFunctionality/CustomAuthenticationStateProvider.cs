@@ -11,17 +11,10 @@ using SimpleLogin.Networking;
 public class CustomAuthenticationStateProvider : AuthenticationStateProvider { 
     // TODO implement custom interface, which extends the above,
     // to avoid casting when this class is used. 
-    //private List<User> users;
 
     
     // private User currentUser; TODO cache user, instead of reading every time.
     private readonly IJSRuntime _jSRuntime;
-
-    // private readonly IJSInProcessRuntime _jSInProcessRuntime;
-
-    // hardcoded list of users
-    
-    
     
     private IDataSaverClient dataSaverClient;
 
@@ -79,10 +72,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
         if (string.IsNullOrEmpty(username)) throw new Exception("Enter username");
 
         if (string.IsNullOrEmpty(password)) throw new Exception("Enter password");
-
-
-
-
+        
         User user;
         
         try {

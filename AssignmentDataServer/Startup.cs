@@ -1,11 +1,11 @@
 using AssignmentDataServer.Persistence;
-using AssignmentDataServer.Util;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Entity.Util;
 
 namespace AssignmentDataServer
 {
@@ -27,7 +27,8 @@ namespace AssignmentDataServer
             services.AddScoped<IPetDAO, PetDAO>();
             services.AddScoped<IUserDAO, UserDAO>();
             
-            services.AddScoped<IInputValidationCheck, InputValidationCheck>();
+            services.AddScoped<IPersonInputValidation, PersonInputValidation>();
+            services.AddScoped<IFamilyInputValidation, FamilyInputValidation>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

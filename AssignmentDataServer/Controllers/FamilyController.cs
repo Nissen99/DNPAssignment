@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Entity.Models;
 using AssignmentDataServer.Persistence;
-using AssignmentDataServer.Util;
+using Entity.Util;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssignmentDataServer.Controllers
@@ -14,13 +14,13 @@ namespace AssignmentDataServer.Controllers
     public class FamilyController : ControllerBase
     {
         private IFamilyDAO familyDao;
-        private IInputValidationCheck inputValidationCheck;
+        private FamilyInputValidation inputValidation;
 
 
-        public FamilyController(IFamilyDAO familyDao, IInputValidationCheck inputValidationCheck)
+        public FamilyController(IFamilyDAO familyDao, FamilyInputValidation familyInputValidation)
         {
             this.familyDao = familyDao;
-            this.inputValidationCheck = inputValidationCheck;
+            inputValidation = familyInputValidation;
 
         }
 
@@ -32,7 +32,7 @@ namespace AssignmentDataServer.Controllers
         public async Task<ActionResult<Family>> AddFamily([FromBody] Family family)
         {
             
-            if (!inputValidationCheck.CheckFamilyValid(family))
+            if (!inputValidation.CheckFamilyValid(family))
             {
                 return BadRequest("Family needs Primay key, StreetName + House number");
             }

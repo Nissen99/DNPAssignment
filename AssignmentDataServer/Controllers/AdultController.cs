@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using AssignmentDataServer.Persistence;
-using AssignmentDataServer.Util;
 using Entity.Models;
+using Entity.Util;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssignmentDataServer.Controllers
@@ -13,13 +13,13 @@ namespace AssignmentDataServer.Controllers
     public class AdultController : ControllerBase
     {
         private IAdultDAO adultDao;
-        private IInputValidationCheck inputValidationCheck;
+        private IPersonInputValidation inputValidation;
         
 
-        public AdultController(IAdultDAO adultDao, IInputValidationCheck inputValidationCheck)
+        public AdultController(IAdultDAO adultDao, IPersonInputValidation personInputValidation)
         {
             this.adultDao = adultDao;
-            this.inputValidationCheck = inputValidationCheck;
+            inputValidation = personInputValidation;
         }
 
         [HttpGet]
@@ -40,7 +40,7 @@ namespace AssignmentDataServer.Controllers
         public ActionResult<Adult> AddAdult([FromBody] Adult adult)
         {
 
-            if (!inputValidationCheck.CheckValidPerson(adult))
+            if (!inputValidation.CheckValidPerson(adult))
             {
                 BadRequest("Something in Adult not set");
 

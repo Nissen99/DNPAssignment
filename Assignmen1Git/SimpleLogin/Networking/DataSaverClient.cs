@@ -10,6 +10,10 @@ using Entity.Models;
 
 namespace SimpleLogin.Networking
 {
+    /*
+     * This class is getting big, could split out into FamilyClient, AdultClient ect., but a lot of the code is just
+     * packing stuff in Json and taking it out + whitespace, so for this assignment kept as one class
+     */
     public class DataSaverClient : IDataSaverClient
     {
         private string uri = "https://localhost:5003";
