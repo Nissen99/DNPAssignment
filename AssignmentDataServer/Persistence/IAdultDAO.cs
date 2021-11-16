@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using AssignmentDataServer.Models;
+using Entity.Models;
 
 namespace AssignmentDataServer.Persistence
 {

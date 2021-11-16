@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
-using SimpleLogin.Data;
+using Entity.Data;
 using SimpleLogin.Networking;
 
 public class CustomAuthenticationStateProvider : AuthenticationStateProvider { 

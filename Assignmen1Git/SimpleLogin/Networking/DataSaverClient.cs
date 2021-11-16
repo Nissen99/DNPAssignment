@@ -4,8 +4,8 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using SimpleLogin.Data;
-using SimpleLogin.Models;
+using Entity.Data;
+using Entity.Models;
 
 
 namespace SimpleLogin.Networking

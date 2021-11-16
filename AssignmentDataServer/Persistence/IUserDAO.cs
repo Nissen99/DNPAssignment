@@ -1,4 +1,4 @@
-﻿using AssignmentDataServer.Data;
+﻿using Entity.Data;
 
 namespace AssignmentDataServer.Persistence
 {

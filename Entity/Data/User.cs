@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
-namespace SimpleLogin.Data
+namespace Entity.Data
 {
-    public class User {
-    
-        [Key] public string Username { get; set; }
+    public class User
+    {
+        public string Username { get; set; }
 
-        [NotNull] public string Password { get; set; }
+        public string Password { get; set; }
 
         //The property 'User.Roles' could not be mapped because it is of type 'string[]', which is not a supported primitive type or a valid entity type.
         //So made to to IList
@@ -21,6 +19,6 @@ namespace SimpleLogin.Data
 
         public override string ToString() {
             return Username;
-        }
+        }   
     }
 }

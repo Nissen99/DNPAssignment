@@ -1,5 +1,5 @@
 ﻿using System;
-using AssignmentDataServer.Models;
+using Entity.Models;
 using AssignmentDataServer.Persistence;
 using Microsoft.AspNetCore.Mvc;
 

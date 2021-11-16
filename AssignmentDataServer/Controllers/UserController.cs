@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using AssignmentDataServer.Data;
+
+using Entity.Data;
 using AssignmentDataServer.Persistence;
 using Microsoft.AspNetCore.Mvc;
 

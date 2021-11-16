@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AssignmentDataServer.Data;
+using Entity.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssignmentDataServer.Persistence

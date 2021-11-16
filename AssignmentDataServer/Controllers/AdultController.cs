@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AssignmentDataServer.Models;
 using AssignmentDataServer.Persistence;
 using AssignmentDataServer.Util;
+using Entity.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssignmentDataServer.Controllers

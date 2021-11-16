@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SimpleLogin.Models;
+using Entity.Models;
 
 namespace SimpleLogin.BuisnessModels.FamilyModel
 {

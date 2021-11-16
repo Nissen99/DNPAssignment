@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using SimpleLogin.Models;
+using Entity.Models;
 
 namespace SimpleLogin.BuisnessModels.FamilyConnectionModels
 {

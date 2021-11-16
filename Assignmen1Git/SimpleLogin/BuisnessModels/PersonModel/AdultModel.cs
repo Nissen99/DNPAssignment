@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SimpleLogin.Models;
+using Entity.Models;
 using SimpleLogin.Networking;
 
 namespace SimpleLogin.BuisnessModels

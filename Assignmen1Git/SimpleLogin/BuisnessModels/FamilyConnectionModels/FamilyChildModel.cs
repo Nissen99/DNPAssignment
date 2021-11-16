@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using SimpleLogin.Models;
+using Entity.Models;
 using SimpleLogin.Networking;
 
 namespace SimpleLogin.BuisnessModels.FamilyConnectionModels

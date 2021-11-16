@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,12 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="Pages\AddNewPersonChoice.razor">
-        <DependentUpon>DisplayFamily.razor</DependentUpon>
-      </Content>
-      <Content Update="Pages\AddInterest.razor">
-        <DependentUpon>AddChild.razor</DependentUpon>
-      </Content>
+      <ProjectReference Include="..\..\Entity\Entity.csproj" />
     </ItemGroup>
 
 </Project>

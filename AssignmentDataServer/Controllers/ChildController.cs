@@ -1,6 +1,4 @@
-﻿
-using System;
-using AssignmentDataServer.Models;
+﻿using Entity.Models;
 using AssignmentDataServer.Persistence;
 using AssignmentDataServer.Util;
 using Microsoft.AspNetCore.Mvc;

@@ -15,6 +15,21 @@
         "Weight": 132,
         "Height": 13,
         "Sex": "af"
+      },
+      {
+        "Job": {
+          "JobTitle": "ads",
+          "Salary": 123
+        },
+        "Id": 6,
+        "FirstName": "sad",
+        "LastName": "asd",
+        "HairColor": "sad",
+        "EyeColor": "sda",
+        "Age": 123,
+        "Weight": 123,
+        "Height": 123,
+        "Sex": "asd"
       }
     ],
     "Children": [
@@ -102,6 +117,12 @@
         "Species": "dsa",
         "Name": "ads",
         "Age": 132
+      },
+      {
+        "Id": 7,
+        "Species": "asd",
+        "Name": "dgsfgf",
+        "Age": 213
       }
     ]
   },

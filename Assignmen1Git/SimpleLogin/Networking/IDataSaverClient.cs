@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SimpleLogin.Data;
-using SimpleLogin.Models;
+using Entity.Data;
+using Entity.Models;
 
 namespace SimpleLogin.Networking
 {
