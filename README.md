@@ -1,5 +1,5 @@
-# DNPAssignment2
+# DNPAssignment
 
 REST application used to controll Families. 
 
-Upgrade from Assignment2, assignment3 was to put database on assignemt2
+Front end blazor connected to a web api,  was to put database on assignemt2
