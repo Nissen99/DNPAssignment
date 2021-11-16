@@ -14,10 +14,10 @@ namespace AssignmentDataServer.Controllers
     public class FamilyController : ControllerBase
     {
         private IFamilyDAO familyDao;
-        private FamilyInputValidation inputValidation;
+        private IFamilyInputValidation inputValidation;
 
 
-        public FamilyController(IFamilyDAO familyDao, FamilyInputValidation familyInputValidation)
+        public FamilyController(IFamilyDAO familyDao, IFamilyInputValidation familyInputValidation)
         {
             this.familyDao = familyDao;
             inputValidation = familyInputValidation;
