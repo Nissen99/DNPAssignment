@@ -163,18 +163,13 @@
    
     private async void PetPopup()
     {
-        var form = ModalService.Show<AddPet>("Pet will be added to family aswell");
+        var form = ModalService.Show<AddPet>();
         var result = await form.Result;
-        Pet pet = null;
         if (!result.Cancelled)
         {
-            pet = (Pet) result.Data;
-            if (Child.Pets == null)
-            {
-                Child.Pets = new List<Pet>();
-            }
-            Child.Pets.Add(pet);
-            StateHasChanged(); //Ved ikke hvorfor den ikke auto updater når man adder til list men fix
+            Pet justCreated = (Pet) result.Data;
+            Child.Pets.Add(justCreated);
+            StateHasChanged(); 
         }
 
     }
@@ -188,15 +183,11 @@
     {
         var form = ModalService.Show<AddInterest>();
         var result = await form.Result;
-        Interest interest = null;
         if (!result.Cancelled)
         {
-            interest = (Interest) result.Data;
-            if (Child.Interests == null)
-            {
-                Child.Interests = new List<Interest>();
-            }
-            Child.Interests.Add(interest);
+            Interest justCreated = (Interest) result.Data;
+           
+            Child.Interests.Add(justCreated);
             StateHasChanged(); //Ved ikke hvorfor den ikke auto updater når man adder til list men fix
         }
     }

@@ -29,10 +29,10 @@ namespace AssignmentDataServer.Controllers
          */
         
         [HttpPost]
-        public async Task<ActionResult<Family>> AddFamily([FromBody] Family family)
+        public ActionResult<Family> AddFamily([FromBody] Family family)
         {
             
-            if (!inputValidation.CheckFamilyValid(family))
+            if (!inputValidation.FamilyHasStreetAndHouseNumber(family))
             {
                 return BadRequest("Family needs Primay key, StreetName + House number");
             }
@@ -43,7 +43,7 @@ namespace AssignmentDataServer.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IList<Family>>> GetFamilies([FromQuery] string StreetName, int? HouseNumber)
+        public ActionResult<IList<Family>> GetFamilies([FromQuery] string StreetName, int? HouseNumber)
         {
 
             if (StreetName == null && HouseNumber == null)
@@ -72,7 +72,7 @@ namespace AssignmentDataServer.Controllers
         }
 
         [HttpPatch]
-        public async Task<ActionResult> UpdateFamily([FromBody] Family family)
+        public ActionResult UpdateFamily([FromBody] Family family)
         {
 
             if (family.Adults.Count > 2 || family.Children.Count > 7)

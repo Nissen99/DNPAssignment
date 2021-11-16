@@ -83,18 +83,16 @@
             {
                 Adult createdWithId = await AdultModel.AddAdultAsync(adult);
                 await FamilyAdultModel.AddAdultToFamilyAsync(createdWithId, Family);
-                 NavigationManager.NavigateTo("/Families");
-               
+                NavigationManager.NavigateTo("/Families");
+               return;
             }
-            else
-            {
-                await AdultModel.AddAdultAsync(adult);
-                NavigationManager.NavigateTo("/Adults");
-            }
+            
+            await AdultModel.AddAdultAsync(adult);
+            NavigationManager.NavigateTo("/Adults");
         }
         catch (Exception e)
         {
-            //Kunne slette den lavede Adult her, hvis vi kom lang nok til den blev oprettet, men ikke i family
+         //Could delete the new Adult here, if we make it far enough to have created it, but then an error occurs
             ModalService.Show<ErrorPage>(e.Message);
         }
      

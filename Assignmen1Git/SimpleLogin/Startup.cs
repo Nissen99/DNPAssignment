@@ -1,4 +1,5 @@
 using Blazored.Modal;
+using Entity.Util;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,7 @@ public class Startup {
         
         
         services.AddScoped<IDataSaverClient, DataSaverClient>();
+        services.AddScoped<IFamilyInputValidation, FamilyInputValidation>();
 
         // Added to template, an authentication state provider
         services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();

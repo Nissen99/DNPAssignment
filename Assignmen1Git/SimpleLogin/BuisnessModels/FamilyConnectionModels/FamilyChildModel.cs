@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Entity.Models;
+using Entity.Util;
 using SimpleLogin.Networking;
 
 namespace SimpleLogin.BuisnessModels.FamilyConnectionModels
@@ -8,22 +9,20 @@ namespace SimpleLogin.BuisnessModels.FamilyConnectionModels
     public class FamilyChildModel : IFamilyChildModel
     {
         private IDataSaverClient dataSaverClient;
+        private IFamilyInputValidation _inputValidation;
 
-        public FamilyChildModel(IDataSaverClient dataSaverClient)
+
+        public FamilyChildModel(IDataSaverClient dataSaverClient, IFamilyInputValidation familyInputValidation)
         {
             this.dataSaverClient = dataSaverClient;
+            _inputValidation = familyInputValidation;
         }
 
         public async Task AddChildToFamilyAsync(Child child, Family family)
         {
-            if (family.Children.Count < 7)
-            {
-                family.Children.Add(child);
-            }
-            else
-            {
-                throw new Exception("Child list full");
-            }
+            _inputValidation.FamilyChildrenNotFull(family);
+            
+            family.Children.Add(child);
             
             await dataSaverClient.UpDateFamilyAsync(family);
         }

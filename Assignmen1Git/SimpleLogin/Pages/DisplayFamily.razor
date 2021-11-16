@@ -309,12 +309,11 @@ else
     {
         var form = ModalService.Show<AddPet>();
         var result = await form.Result;
-        Pet pet = null;
         if (!result.Cancelled)
         {
-            pet = (Pet) result.Data;
-            pet = await PetModel.AddPetAsync(pet);
-            await FamilyPetModel.AddPetToFamilyAsync(Family, pet);
+            Pet justCreated = (Pet) result.Data;
+            justCreated = await PetModel.AddPetAsync(justCreated);
+            await FamilyPetModel.AddPetToFamilyAsync(Family, justCreated);
         }
     }
 
