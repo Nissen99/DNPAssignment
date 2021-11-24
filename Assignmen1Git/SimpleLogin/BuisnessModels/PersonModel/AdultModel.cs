@@ -1,32 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entity.Models;
-using SimpleLogin.Networking;
+using SimpleLogin.Networking.Person;
 
-namespace SimpleLogin.BuisnessModels
+namespace SimpleLogin.BuisnessModels.PersonModel
 {
     public class AdultModel : IAdultModel
     {
-        private IDataSaverClient dataSaverClient;
+        private IAdultClient _adultClient;
 
-        public AdultModel(IDataSaverClient dataSaverClient)
+        public AdultModel(IAdultClient adultClient)
         {
-            this.dataSaverClient = dataSaverClient;
+            _adultClient = adultClient;
         }
 
         public async Task<Adult> AddAdultAsync(Adult adult)
         {
-           return await dataSaverClient.AddAdultAsync(adult);
+           return await _adultClient.AddAdultAsync(adult);
         }
 
         public async Task RemoveAdultAsync(Adult adult)
         {
-              await dataSaverClient.RemoveAdultAsync(adult);
+              await _adultClient.RemoveAdultAsync(adult);
         }
 
         public async Task<IList<Adult>> GetAllAdultsAsync()
         {
-            return await dataSaverClient.GetAllAdultsAsync();
+            return await _adultClient.GetAllAdultsAsync();
         }
 
    

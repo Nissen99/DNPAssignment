@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SimpleLogin.BuisnessModels;
 using SimpleLogin.BuisnessModels.FamilyConnectionModels;
 using SimpleLogin.BuisnessModels.FamilyModel;
-using SimpleLogin.Networking;
+using SimpleLogin.BuisnessModels.PersonModel;
+using SimpleLogin.LoginFunctionality;
+using SimpleLogin.Networking.Person;
+using SimpleLogin.Networking.Pet;
+using SimpleLogin.Networking.User;
 
 
 namespace SimpleLogin {
@@ -27,8 +30,12 @@ public class Startup {
         services.AddServerSideBlazor();
         services.AddBlazoredModal();
         
-        
-        services.AddScoped<IDataSaverClient, DataSaverClient>();
+        services.AddScoped<IFamilyClient, FamilyClient>();
+        services.AddScoped<IAdultClient, AdultClient>();
+        services.AddScoped<IChildClient, ChildClient>();
+        services.AddScoped<IPetClient, PetClient>();
+        services.AddScoped<IUserClient, UserClient>();
+
         services.AddScoped<IFamilyInputValidation, FamilyInputValidation>();
 
         // Added to template, an authentication state provider

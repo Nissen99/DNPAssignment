@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Entity.Models;
 
-namespace SimpleLogin.BuisnessModels
+namespace SimpleLogin.BuisnessModels.PersonModel
 {
     public interface IAdultModel
     {

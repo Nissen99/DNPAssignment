@@ -21,68 +21,67 @@ namespace AssignmentDataServer.Controllers
         {
             this.familyDao = familyDao;
             inputValidation = familyInputValidation;
-
         }
 
         /*
-         * Tjek for StreetName + House Number server side, incase new client will not
+         * Tjek for StreetName + House Number server side, incase new client will not (Future Client)
          */
-        
+
         [HttpPost]
         public ActionResult<Family> AddFamily([FromBody] Family family)
         {
-            
             if (!inputValidation.FamilyHasStreetAndHouseNumber(family))
             {
                 return BadRequest("Family needs Primay key, StreetName + House number");
             }
-            
+
             familyDao.AddFamily(family);
             return Created("Family created", family);
-
         }
+
         
-        [HttpGet("GetByNameAndNumber/StreetName={StreetName}&HouseNumber={HouseNumber}")]
-        public ActionResult<Family> GetFamiliesOnStreetAndNumber(string StreetName, int? HouseNumber)
+        private ActionResult<IList<Family>> returnFamilyFromStreetAndNumber(string? StreetName, int? HouseNumber)
         {
-            Console.WriteLine("STREET ANAD NUMBER ");
-            Console.WriteLine("Street: " + StreetName);
-            Console.WriteLine("Number: " + HouseNumber);
             try
             {
-                Family Family = familyDao.GetAllFamilies().First(f =>
+                IList<Family> listWithOneFamily = new List<Family>();
+                Family familyFound = familyDao.GetAllFamilies().First(f =>
                     f.StreetName.Equals(StreetName) && f.HouseNumber == HouseNumber);
-                Console.WriteLine("Family found: " + Family.Name);
-                return Ok(Family);
+                listWithOneFamily.Add(familyFound);
+                return Ok(listWithOneFamily);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                return BadRequest();
+                return NotFound("Family Not found");
             }
         }
 
+        
+        /*
+         * If only 1 Query argument sat it will just return all
+         * Could implement thinning of the list so one argument could be used
+         */
         [HttpGet]
-        public ActionResult<IList<Family>> GetFamilies()
+        public ActionResult<IList<Family>> GetFamilies([FromQuery] string? StreetName, [FromQuery] int? HouseNumber)
         {
-       
-                IList<Family> allFamilies = familyDao.GetAllFamilies();
-            
-                if (allFamilies.Count == 0)
-                {
-                    return NotFound("No families found");
-                }
-                Console.WriteLine("ALL");
+            if (StreetName != null && HouseNumber != null)
+            {
+                return returnFamilyFromStreetAndNumber(StreetName, HouseNumber);
+            }
 
-                return Ok(allFamilies);
-                
+            IList<Family> allFamilies = familyDao.GetAllFamilies();
+
+            if (allFamilies.Count == 0)
+            {
+                return NotFound("No families found");
+            }
             
+            return Ok(allFamilies);
         }
 
         [HttpPatch]
         public ActionResult UpdateFamily([FromBody] Family family)
         {
-
             if (family.Adults.Count > 2 || family.Children.Count > 7)
             {
                 Console.WriteLine("Bad Request");
@@ -92,7 +91,6 @@ namespace AssignmentDataServer.Controllers
             try
             {
                 familyDao.UpdateFamily(family);
-
             }
             catch (Exception e)
             {
@@ -114,7 +112,6 @@ namespace AssignmentDataServer.Controllers
             try
             {
                 familyDao.RemoveFamily(HouseNumber, StreetName);
-
             }
             catch (Exception e)
             {
@@ -123,9 +120,5 @@ namespace AssignmentDataServer.Controllers
 
             return Ok();
         }
-
-        
-      
-     
     }
 }

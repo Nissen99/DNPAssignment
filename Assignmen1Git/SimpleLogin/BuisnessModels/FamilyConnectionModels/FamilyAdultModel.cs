@@ -1,27 +1,24 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Entity.Models;
 using Entity.Util;
-using SimpleLogin.Networking;
 
 namespace SimpleLogin.BuisnessModels.FamilyConnectionModels
 {
     public class FamilyAdultModel : IFamilyAdultModel
     {
-        private IDataSaverClient dataSaverClient;
-        private IFamilyInputValidation _inputValidation;
+        private readonly IFamilyClient _familyClient;
+        private readonly IFamilyInputValidation _inputValidation;
 
-        public FamilyAdultModel(IDataSaverClient dataSaverClient, IFamilyInputValidation familyInputValidation)
+        public FamilyAdultModel(IFamilyClient familyClient, IFamilyInputValidation familyInputValidation)
         {
-            this.dataSaverClient = dataSaverClient;
+            _familyClient = familyClient;
             _inputValidation = familyInputValidation;
         }
         
         public async Task RemoveAdultFromFamilyAsync(Family family, Adult adult)
         {
             family.Adults.Remove(adult);
-            await dataSaverClient.UpDateFamilyAsync(family);
+            await _familyClient.UpDateFamilyAsync(family);
         }
         
         public async Task AddAdultToFamilyAsync(Adult adult, Family family)
@@ -32,7 +29,7 @@ namespace SimpleLogin.BuisnessModels.FamilyConnectionModels
             
             family.Adults.Add(adult);
                 
-            await dataSaverClient.UpDateFamilyAsync(family);
+            await _familyClient.UpDateFamilyAsync(family);
         }
     }
 }

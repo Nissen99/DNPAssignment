@@ -21,9 +21,7 @@ namespace AssignmentDataServer.Controllers
         [HttpPost]
         public ActionResult<Pet> AddPet([FromBody] Pet pet)
         {
-            Console.WriteLine("BEFORE: " + pet.Id);
             petDao.AddPet(pet);
-            Console.WriteLine("AFTER: " + pet.Id);
             return Created("New Id: " + pet.Id, pet);
         }
     }

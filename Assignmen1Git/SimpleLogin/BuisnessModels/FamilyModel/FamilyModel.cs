@@ -1,40 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entity.Models;
-using SimpleLogin.Networking;
+
 
 namespace SimpleLogin.BuisnessModels.FamilyModel
 {
     public class FamilyModel : IFamilyModel
     {
-        private IDataSaverClient dataSaverClient;
+        private readonly IFamilyClient _familyClient;
 
-        public FamilyModel(IDataSaverClient dataSaverClient)
+        public FamilyModel(IFamilyClient familyClient)
         {
-            this.dataSaverClient = dataSaverClient;
+            _familyClient = familyClient;
         }
 
         public async Task AddFamilyAsync(Family family)
         {
-            await dataSaverClient.AddFamilyAsync(family);
+            await _familyClient.AddFamilyAsync(family);
         }
 
         public async Task<IList<Family>> GetAllFamiliesAsync()
         {
-            IList<Family> allFamilies = await dataSaverClient.GetAllFamiliesAsync();
+            IList<Family> allFamilies = await _familyClient.GetAllFamiliesAsync();
             return allFamilies;
         }
 
         public async Task RemoveFamilyAsync(Family family)
         {
-            await dataSaverClient.RemoveFamilyAsync(family);
+            await _familyClient.RemoveFamilyAsync(family);
         }
 
         public async Task<Family> GetFamilyAsync(string streetName, int houseNumber)
         {
-            Console.WriteLine("GET FAM ASYNC");
-            return await dataSaverClient.GetFamilyAsync(streetName, houseNumber);
+            return await _familyClient.GetFamilyAsync(streetName, houseNumber);
         }
     }
 }

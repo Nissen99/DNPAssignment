@@ -1,27 +1,29 @@
 ﻿using System.Threading.Tasks;
 using Entity.Models;
-using SimpleLogin.Networking;
+using SimpleLogin.Networking.Person;
 
-namespace SimpleLogin.BuisnessModels
+namespace SimpleLogin.BuisnessModels.PersonModel
 {
     public class ChildModel : IChildModel
     {
-        private IDataSaverClient dataSaverClient;
+        private IChildClient _childClient;
+        private IFamilyClient _familyClient;
 
-        public ChildModel(IDataSaverClient dataSaverClient)
+        public ChildModel(IFamilyClient familyClient, IChildClient childClient)
         {
-            this.dataSaverClient = dataSaverClient;
+            _familyClient = familyClient;
+            _childClient = childClient;
         }
 
         public async Task<Child> AddChildAsync(Child child)
         {
-            return await dataSaverClient.AddChildAsync(child);
+            return await _childClient.AddChildAsync(child);
         }
 
         public async Task RemoveChildAsync(Family family, Child child)
         {
             family.Children.Remove(child);
-            await dataSaverClient.UpDateFamilyAsync(family);
+            await _familyClient.UpDateFamilyAsync(family);
         }
     }
 }

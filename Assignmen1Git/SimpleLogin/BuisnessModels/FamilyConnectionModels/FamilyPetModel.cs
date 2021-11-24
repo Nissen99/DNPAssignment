@@ -1,22 +1,22 @@
 ﻿using System.Threading.Tasks;
 using Entity.Models;
-using SimpleLogin.Networking;
+
 
 namespace SimpleLogin.BuisnessModels.FamilyConnectionModels
 {
     public class FamilyPetModel : IFamilyPetModel
     {
-        private IDataSaverClient dataSaverClient;
+        private readonly IFamilyClient _familyClient;
 
-        public FamilyPetModel(IDataSaverClient dataSaverClient)
+        public FamilyPetModel(IFamilyClient familyClient)
         {
-            this.dataSaverClient = dataSaverClient;
+            _familyClient = familyClient;
         }
         
         public async Task AddPetToFamilyAsync(Family family, Pet pet)
         {
             family.Pets.Add(pet);
-            await dataSaverClient.UpDateFamilyAsync(family);
+            await _familyClient.UpDateFamilyAsync(family);
         }
 
     }
