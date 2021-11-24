@@ -102,7 +102,9 @@ else
     private void DisplayFamily(Family family)
     {
         string familyAsJson = JsonSerializer.Serialize(family);
-        NavigationManager.NavigateTo($"/DisplayFamily/{familyAsJson}");
+        Console.WriteLine("THIS GETS CALLLLLLLEEEEEEEDDD");
+        NavigationManager.NavigateTo($"/DisplayFamily/{family.StreetName}/{family.HouseNumber}");
+        
     }
     private async Task executeFilter()
     {

@@ -20,5 +20,6 @@ namespace SimpleLogin.Networking
         Task<Pet> AddPetAsync(Pet pet);
 
         Task<User> ValidateLoginAsync(string username, string password);
+        Task<Family> GetFamilyAsync(string streetName, int houseNumber);
     }
 }

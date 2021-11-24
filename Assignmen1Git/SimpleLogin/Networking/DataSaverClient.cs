@@ -195,5 +195,34 @@ namespace SimpleLogin.Networking
             return userFromServer;            
 
         }
+
+        public async Task<Family> GetFamilyAsync(string streetName, int houseNumber)
+        {
+            Console.WriteLine("FAMILY CLIENT");
+            Console.WriteLine("STREET: " + streetName);
+            using HttpClient httpClient = new HttpClient();
+
+            // string requestUri = uri + "/Family";
+            string requestUri = uri + $"/Family/GetByNameAndNumber/StreetName={streetName}&HouseNumber={houseNumber}";
+            
+            HttpResponseMessage responseMessage =
+                await httpClient.GetAsync( requestUri); 
+        //"https://localhost:5003  /Family/GetByNameAndNumber/StreetName=TSAASA&HouseNumber=213" 
+            
+            Console.WriteLine("Family efter response");
+            RequestCodeCheck(responseMessage);
+
+            string inFromServer = await responseMessage.Content.ReadAsStringAsync();
+
+            Family familyFromServer = JsonSerializer.Deserialize<Family>(inFromServer,
+                new JsonSerializerOptions()
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+            return familyFromServer;
+
+
+        }
     }
 }

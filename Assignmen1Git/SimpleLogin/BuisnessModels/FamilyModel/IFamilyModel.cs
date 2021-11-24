@@ -10,5 +10,6 @@ namespace SimpleLogin.BuisnessModels.FamilyModel
 
         Task<IList<Family>> GetAllFamiliesAsync();
         Task RemoveFamilyAsync(Family family);
+        Task<Family> GetFamilyAsync(string streetName, int houseNumber);
     }
 }

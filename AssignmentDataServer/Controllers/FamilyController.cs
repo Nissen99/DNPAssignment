@@ -41,33 +41,41 @@ namespace AssignmentDataServer.Controllers
             return Created("Family created", family);
 
         }
+        
+        [HttpGet("GetByNameAndNumber/StreetName={StreetName}&HouseNumber={HouseNumber}")]
+        public ActionResult<Family> GetFamiliesOnStreetAndNumber(string StreetName, int? HouseNumber)
+        {
+            Console.WriteLine("STREET ANAD NUMBER ");
+            Console.WriteLine("Street: " + StreetName);
+            Console.WriteLine("Number: " + HouseNumber);
+            try
+            {
+                Family Family = familyDao.GetAllFamilies().First(f =>
+                    f.StreetName.Equals(StreetName) && f.HouseNumber == HouseNumber);
+                Console.WriteLine("Family found: " + Family.Name);
+                return Ok(Family);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest();
+            }
+        }
 
         [HttpGet]
-        public ActionResult<IList<Family>> GetFamilies([FromQuery] string StreetName, int? HouseNumber)
+        public ActionResult<IList<Family>> GetFamilies()
         {
-
-            if (StreetName == null && HouseNumber == null)
-            {
+       
                 IList<Family> allFamilies = familyDao.GetAllFamilies();
             
                 if (allFamilies.Count == 0)
                 {
                     return NotFound("No families found");
                 }
-            
-                return Ok(allFamilies);
-            }
+                Console.WriteLine("ALL");
 
-            try
-            {
-                Family Family = familyDao.GetAllFamilies().First(f =>
-                    f.StreetName.Equals(StreetName) && f.HouseNumber == HouseNumber);
-                return Ok(Family);
-            }
-            catch (Exception e)
-            {
-                return BadRequest();
-            }
+                return Ok(allFamilies);
+                
             
         }
 

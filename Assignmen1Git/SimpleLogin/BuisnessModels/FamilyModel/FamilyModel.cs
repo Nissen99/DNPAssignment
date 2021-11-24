@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entity.Models;
 using SimpleLogin.Networking;
@@ -30,6 +31,10 @@ namespace SimpleLogin.BuisnessModels.FamilyModel
             await dataSaverClient.RemoveFamilyAsync(family);
         }
 
-
+        public async Task<Family> GetFamilyAsync(string streetName, int houseNumber)
+        {
+            Console.WriteLine("GET FAM ASYNC");
+            return await dataSaverClient.GetFamilyAsync(streetName, houseNumber);
+        }
     }
 }
