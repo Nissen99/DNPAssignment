@@ -278,12 +278,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("DET VIRK OnInit");
-        Console.WriteLine("Streetname =: " + FamilyStreetName);
-        Console.WriteLine("Streetnumber =: " + FamilyHouseNumber);
-
+        
         Family = await FamilyModel.GetFamilyAsync(FamilyStreetName, int.Parse(FamilyHouseNumber));
-        Console.WriteLine("OnInitialized: " + Family.Name);
         StateHasChanged();
     }
 
@@ -300,12 +296,7 @@ else
         parameters.Add("Family", Family);
         ModalService.Show<AddNewPersonChoice>("Make new person or choose existing", parameters);
     }
-
-    /*
-     * Når man remover child bliver det childs pet stadigvæk
-     * Det kan fixes med et hurtigt loop hvis det ønskes
-     */
-
+    
     private void removeChildFromFamily(Child child)
     {
         ChildModel.RemoveChildAsync(Family, child);

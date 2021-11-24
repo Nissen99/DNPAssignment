@@ -1,4 +1,4 @@
-﻿@page "/AddChild/{FamilyAsJson}"
+﻿@page "/AddChild/{FamilyStreetName}/{FamilyHouseNumber}"
 @using Entity.Models;
 @using System.Text.Json
 @using SimpleLogin.BuisnessModels
@@ -10,6 +10,7 @@
 @inject IModalService ModalService
 @inject IPetModel PetModel
 @inject IFamilyPetModel FamilyPetModel
+@inject IFamilyModel FamilyModel
 @inject NavigationManager NavigationManager
 
 <h3>AddChild</h3>
@@ -136,18 +137,21 @@
 
     private Child Child = new Child();
     
+  
+
     [Parameter]
-    public string FamilyAsJson { get; set; }
+    public string FamilyHouseNumber { get; set; }
+
+    [Parameter]
+    public string FamilyStreetName { get; set; }
 
     private Family Family;
 
-    protected override void OnParametersSet()
+    protected override async Task OnInitializedAsync()
     {
-        Family = JsonSerializer.Deserialize<Family>(FamilyAsJson, new JsonSerializerOptions()
-        {
-            WriteIndented = true,
-            PropertyNameCaseInsensitive = true
-        });
+        
+        Family = await FamilyModel.GetFamilyAsync(FamilyStreetName, int.Parse(FamilyHouseNumber));
+        StateHasChanged();
     }
 
  

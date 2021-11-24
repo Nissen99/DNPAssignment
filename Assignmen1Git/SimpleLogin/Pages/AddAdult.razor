@@ -1,13 +1,14 @@
 ﻿@page "/AddAdult"
-@page "/AddAdult/{FamilyAsJson}"
+@page "/AddAdult/{FamilyStreetName}/{FamilyHouseNumber}"
 @using Entity.Models;
 @using SimpleLogin.BuisnessModels
-@using System.Text.Json
 @using SimpleLogin.BuisnessModels.FamilyConnectionModels
+@using SimpleLogin.BuisnessModels.FamilyModel
 
 @attribute [Authorize(Policy = "MustBeAdmin")]
 @inject IModalService ModalService
 @inject IAdultModel AdultModel
+@inject IFamilyModel FamilyModel
 @inject IFamilyAdultModel FamilyAdultModel
 @inject NavigationManager NavigationManager 
 
@@ -63,8 +64,31 @@
     private string jobTitle;
     private int? salary;
     
-    [Parameter] public string FamilyAsJson { get; set; }
+    [Parameter]
+    public string FamilyHouseNumber { get; set; }
+
+    [Parameter]
+    public string FamilyStreetName { get; set; }
+
     private Family Family;
+
+    
+    /*
+     * Ved ikke hvorfor den her kør selv hvis parameter ikke sat, men fix med try catch 
+     */
+    protected override async void OnParametersSet()
+    {
+        try
+        {
+            Family = await FamilyModel.GetFamilyAsync(FamilyStreetName, int.Parse(FamilyHouseNumber));
+
+        }
+        catch (ArgumentNullException e)
+        {
+            Console.WriteLine("Family Not Sat");
+            Family = null;
+        }
+    }
    
 
     /*
@@ -100,26 +124,6 @@
 
     }
     
-
-    
-    protected override void OnParametersSet()
-    {
-        try
-        {
-            Family = JsonSerializer.Deserialize<Family>(FamilyAsJson, new JsonSerializerOptions()
-            {
-                WriteIndented = true,
-                PropertyNameCaseInsensitive = true
-            });
-            Console.WriteLine(Family.StreetName);
-        }
-        catch (Exception e)
-        {
-            //Går i Catch hvis ikke vi bruger family parameteret
-        }
-
-    }
-
 
 
 

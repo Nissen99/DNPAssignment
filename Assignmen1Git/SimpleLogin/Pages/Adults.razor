@@ -1,13 +1,15 @@
 ﻿@page "/Adults"
-@page "/Adults/{FamilyAsJson}"
+@page "/Adults/{FamilyStreetName}/{FamilyHouseNumber}"
 @using Entity.Models;
 @using SimpleLogin.BuisnessModels
 @using System.Text.Json
 @using SimpleLogin.BuisnessModels.FamilyConnectionModels
+@using SimpleLogin.BuisnessModels.FamilyModel
 @inject IAdultModel AdultModel
 @inject IFamilyAdultModel FamilyAdultModel
 @inject NavigationManager NavigationManager
 @inject IModalService ModalService
+@inject IFamilyModel FamilyModel
 
 <h3>List of all Adults in the system</h3>
 
@@ -121,15 +123,21 @@ else
     private IList<Adult> allAdults;
     private string nameFilter = "";
 
-    [Parameter] public string FamilyAsJson { get; set; }
-    private Family Family;
+    [Parameter]
+    public string FamilyHouseNumber { get; set; }
 
+    [Parameter]
+    public string FamilyStreetName { get; set; }
+
+    private Family Family;
+    
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             allAdults = await AdultModel.GetAllAdultsAsync();
+
         }
         catch (Exception e)
         {
@@ -139,19 +147,15 @@ else
     }
     
     
-    protected override void OnParametersSet()
+    protected override async void OnParametersSet()
     {
         try
         {
-            Family = JsonSerializer.Deserialize<Family>(FamilyAsJson, new JsonSerializerOptions() {
-                WriteIndented = true,
-                PropertyNameCaseInsensitive = true
-            });
-            Console.WriteLine(Family.StreetName);
+            Family = await FamilyModel.GetFamilyAsync(FamilyStreetName, int.Parse(FamilyHouseNumber));
+            StateHasChanged();
         }
         catch (Exception e)
         {}
-
     }
     
 

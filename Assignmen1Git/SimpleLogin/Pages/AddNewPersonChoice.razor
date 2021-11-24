@@ -1,5 +1,4 @@
 ﻿@using Entity.Models;
-@using System.Text.Json
 @inject NavigationManager NavigationManager 
 
 
@@ -17,13 +16,11 @@
       
     private void addNewPerson()
     {
-        string FamilyAsJson = JsonSerializer.Serialize(Family);
-        NavigationManager.NavigateTo($"/AddAdult/{FamilyAsJson}");
+        NavigationManager.NavigateTo($"/AddAdult/{Family.StreetName}/{Family.HouseNumber}");
     }
 
     private void chooseExistingPerson()
     {
-        string FamilyAsJson = JsonSerializer.Serialize(Family);
-        NavigationManager.NavigateTo($"/Adults/{FamilyAsJson}");
+        NavigationManager.NavigateTo($"/Adults/{Family.StreetName}/{Family.HouseNumber}");
     }
 }

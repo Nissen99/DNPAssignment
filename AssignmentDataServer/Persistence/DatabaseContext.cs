@@ -17,7 +17,7 @@ namespace AssignmentDataServer.Persistence
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           optionsBuilder.UseSqlite(@"Data Source = C:\Users\mikke\RiderProjects\DNPAssignment\AssignmentDataServer\Family.db");
+           optionsBuilder.UseSqlite(@"Data Source = C:\Users\Mikkel\RiderProjects\DNPAssignment\AssignmentDataServer\Family.db");
         }
 
         /*
